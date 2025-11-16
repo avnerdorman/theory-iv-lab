@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="assets/css/main.css">
 
     <!-- Tone.js -->
-    <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
-    <!-- Shared helpers -->
+    <script type="module">
+        import * as Tone from "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js";
+        window.Tone = Tone;
+    </script>    <!-- Shared helpers -->
     <script src="assets/js/shared.js" defer></script>
 
     <!-- Main JS -->
