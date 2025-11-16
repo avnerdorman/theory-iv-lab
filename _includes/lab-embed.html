@@ -1,0 +1,17 @@
+{% assign embed_src = include.src | default: '' %}
+{% assign embed_title = include.title | default: 'Interactive Lab' %}
+{% assign embed_height = include.height | default: '760' %}
+
+{% if embed_src != '' %}
+<section class="course-panel lab-embed">
+  <iframe
+      class="lab-frame"
+      src="{{ embed_src | relative_url }}"
+      title="{{ embed_title }}"
+      loading="lazy"
+      height="{{ embed_height }}"
+      scrolling="no"
+      aria-label="{{ embed_title }}">
+  </iframe>
+</section>
+{% endif %}
