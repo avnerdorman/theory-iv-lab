@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let trackA = [];
   let trackB = [];
+  let trackASound = "hat-bright";
+  let trackBSound = "clave";
 
   let isPlaying = false;
   let currentStep = 0;
@@ -43,6 +45,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const lengthCustomInput = document.getElementById("length-custom");
   const repeatsInput = document.getElementById("repeats-input");
   const repeatInfiniteToggle = document.getElementById("repeat-infinite");
+  const soundASelect = document.getElementById("sound-a-select");
+  const soundBSelect = document.getElementById("sound-b-select");
+  soundASelect.value = trackASound;
+  soundBSelect.value = trackBSound;
+
+  function updateLengthControls(len) {
+    const clamped = clamp(len, 1, 36);
+    lengthCustomInput.value = clamped;
+    let match = false;
+    for (const opt of lengthSelect.options) {
+      if (opt.value !== "custom" && parseInt(opt.value, 10) === clamped) {
+        lengthSelect.value = opt.value;
+        match = true;
+        break;
+      }
+    }
+    if (match) {
+      lengthCustomInput.classList.add("hidden");
+    } else {
+      lengthSelect.value = "custom";
+      lengthCustomInput.classList.remove("hidden");
+    }
+  }
+
+  function updateRepeatControls() {
+    repeatInfiniteToggle.checked = infiniteRepeats;
+    if (infiniteRepeats) {
+      repeatsInput.type = "text";
+      repeatsInput.readOnly = true;
+      repeatsInput.value = "∞";
+      repeatsInput.classList.add("infinite-indicator");
+    } else {
+      repeatsInput.type = "number";
+      repeatsInput.readOnly = false;
+      repeatsInput.value = repeats;
+      repeatsInput.classList.remove("infinite-indicator");
+      repeatsInput.min = "1";
+      repeatsInput.max = "32";
+      repeatsInput.step = "1";
+    }
+  }
   const pulseToggle = document.getElementById("pulse-toggle");
   const exportBtn = document.getElementById("export-btn");
   const exportArea = document.getElementById("export-area");
@@ -121,31 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
     tempoSlider.value = tempo;
     tempoLabel.textContent = `${tempo} BPM`;
 
-    // Set pattern length in select if present
-    let found = false;
-    for (const opt of lengthSelect.options) {
-      if (opt.value !== "custom" && parseInt(opt.value, 10) === patternLength) {
-        lengthSelect.value = opt.value;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      patternLength = clamp(patternLength, 1, 36);
-      trackA.length = patternLength;
-      trackB.length = patternLength;
-      trackA = trackA.map(v => !!v);
-      trackB = trackB.map(v => !!v);
-      lengthSelect.value = "custom";
-      lengthCustomInput.classList.remove("hidden");
-      lengthCustomInput.value = patternLength.toString();
-    } else {
-      lengthCustomInput.classList.add("hidden");
-    }
-
-    repeatsInput.value = repeats;
-    repeatInfiniteToggle.checked = false;
-    repeatsInput.disabled = false;
+    updateLengthControls(patternLength);
+    updateRepeatControls();
     maxSteps = patternLength * repeats;
 
     if (isPlaying) {
@@ -336,10 +356,10 @@ function applyClickToTrack(trackArr, index) {
       triggerPulseSound();
     }
     if (trackA[patternIndex]) {
-      triggerTrackSound(true);
+      triggerTrackSound(trackASound);
     }
     if (trackB[patternIndex]) {
-      triggerTrackSound(false);
+      triggerTrackSound(trackBSound);
     }
 
     updateCurrentPulseHighlight(currentStep);
@@ -506,7 +526,7 @@ function applyClickToTrack(trackArr, index) {
     if (!params || Object.keys(params).length === 0) return;
 
     if (params.len) {
-      const len = clamp(parseInt(params.len, 10) || 16, 1, 64);
+      const len = clamp(parseInt(params.len, 10) || 16, 1, 36);
       patternLength = len;
     }
     if (params.rep) {
@@ -535,32 +555,8 @@ function applyClickToTrack(trackArr, index) {
     tempoSlider.value = tempo;
     tempoLabel.textContent = `${tempo} BPM`;
 
-    // Pattern length dropdown
-    let found = false;
-    for (const opt of lengthSelect.options) {
-      if (parseInt(opt.value, 10) === patternLength) {
-        lengthSelect.value = opt.value;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      // Allow custom length up to 36
-      patternLength = clamp(patternLength, 1, 36);
-      trackA.length = patternLength;
-      trackB.length = patternLength;
-      trackA = trackA.map(v => !!v);
-      trackB = trackB.map(v => !!v);
-      lengthSelect.value = "custom";
-      lengthCustomInput.classList.remove("hidden");
-      lengthCustomInput.value = patternLength.toString();
-    } else {
-      lengthCustomInput.classList.add("hidden");
-    }
-
-    repeatsInput.value = repeats;
-    repeatInfiniteToggle.checked = infiniteRepeats;
-    repeatsInput.disabled = infiniteRepeats;
+    updateLengthControls(patternLength);
+    updateRepeatControls();
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
   }
 
@@ -584,21 +580,23 @@ function applyClickToTrack(trackArr, index) {
     if (e.target.value === "custom") {
       lengthCustomInput.classList.remove("hidden");
       lengthCustomInput.focus();
+      lengthCustomInput.value = patternLength;
       return;
     }
     lengthCustomInput.classList.add("hidden");
     const len = parseInt(e.target.value, 10);
     initPattern(len);
+    updateLengthControls(patternLength);
     buildGrid();
   });
 
   lengthCustomInput.addEventListener("change", e => {
-    lengthSelect.value = "custom";
     let val = parseInt(e.target.value, 10);
     if (isNaN(val)) val = patternLength;
     val = clamp(val, 1, 36);
     e.target.value = val;
     initPattern(val);
+    updateLengthControls(patternLength);
     buildGrid();
   });
 
@@ -609,12 +607,21 @@ function applyClickToTrack(trackArr, index) {
     repeats = val;
     e.target.value = val;
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
+    updateRepeatControls();
   });
 
   repeatInfiniteToggle.addEventListener("change", e => {
     infiniteRepeats = e.target.checked;
-    repeatsInput.disabled = infiniteRepeats;
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
+    updateRepeatControls();
+  });
+
+  soundASelect.addEventListener("change", e => {
+    trackASound = e.target.value;
+  });
+
+  soundBSelect.addEventListener("change", e => {
+    trackBSound = e.target.value;
   });
 
   pulseToggle.addEventListener("change", e => {
@@ -636,6 +643,8 @@ function applyClickToTrack(trackArr, index) {
   // Either load from URL or start with empty
   initPattern(patternLength);
   loadFromQueryParams();
+  updateLengthControls(patternLength);
+  updateRepeatControls();
   buildGrid();
 });
 
@@ -660,53 +669,84 @@ async function ensureAudioContext() {
 
 function triggerPulseSound() {
   if (!audioContext || !masterGain) return;
-  const now = audioContext.currentTime;
-
-  // Kick-like thump
-  const osc = audioContext.createOscillator();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(140, now);
-  osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
-
-  const gain = audioContext.createGain();
-  gain.gain.setValueAtTime(0.8, now);
-  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-
-  osc.connect(gain);
-  gain.connect(masterGain);
-
-  osc.start(now);
-  osc.stop(now + 0.2);
+  playNoiseBurst({ centerFreq: 3200, q: 3, duration: 0.05, gain: 0.25 });
 }
 
-function triggerTrackSound(isHigh = false) {
+function triggerTrackSound(soundId = "clave") {
   if (!audioContext || !masterGain) return;
-  const now = audioContext.currentTime;
+  switch (soundId) {
+    case "hat-bright":
+      playNoiseBurst({ centerFreq: 9000, q: 6, duration: 0.07, gain: 0.45 });
+      break;
+    case "shaker":
+      playNoiseBurst({ centerFreq: 5000, q: 1.2, duration: 0.12, gain: 0.3 });
+      break;
+    case "wood":
+      playToneClick({
+        type: "triangle",
+        startFreq: 700,
+        endFreq: 400,
+        duration: 0.14,
+        gain: 0.4
+      });
+      break;
+    case "clave":
+    default:
+      playToneClick({
+        type: "square",
+        startFreq: 1500,
+        endFreq: 1100,
+        duration: 0.08,
+        gain: 0.45
+      });
+      break;
+  }
+}
 
-  // Noise burst for hi-hat / click
-  const bufferSize = audioContext.sampleRate * 0.1;
+function playNoiseBurst({ centerFreq, q = 1.5, duration = 0.08, gain = 0.3 }) {
+  const now = audioContext.currentTime;
+  const bufferSize = Math.max(1, Math.floor(audioContext.sampleRate * duration));
   const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
   const data = noiseBuffer.getChannelData(0);
   for (let i = 0; i < bufferSize; i++) {
-    data[i] = (Math.random() * 2 - 1) * (isHigh ? 0.6 : 0.4);
+    data[i] = Math.random() * 2 - 1;
   }
 
   const noise = audioContext.createBufferSource();
   noise.buffer = noiseBuffer;
 
-  const bandpass = audioContext.createBiquadFilter();
-  bandpass.type = "bandpass";
-  bandpass.frequency.value = isHigh ? 8000 : 2000;
-  bandpass.Q.value = 1;
+  const filter = audioContext.createBiquadFilter();
+  filter.type = "bandpass";
+  filter.frequency.value = centerFreq;
+  filter.Q.value = q;
 
-  const gain = audioContext.createGain();
-  gain.gain.setValueAtTime(isHigh ? 0.5 : 0.35, now);
-  gain.gain.exponentialRampToValueAtTime(0.001, now + (isHigh ? 0.08 : 0.12));
+  const gainNode = audioContext.createGain();
+  gainNode.gain.setValueAtTime(gain, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-  noise.connect(bandpass);
-  bandpass.connect(gain);
-  gain.connect(masterGain);
+  noise.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(masterGain);
 
   noise.start(now);
-  noise.stop(now + 0.15);
+  noise.stop(now + duration);
+}
+
+function playToneClick({ type, startFreq, endFreq, duration, gain }) {
+  const now = audioContext.currentTime;
+  const osc = audioContext.createOscillator();
+  osc.type = type;
+  osc.frequency.setValueAtTime(startFreq, now);
+  if (endFreq && endFreq > 0) {
+    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+  }
+
+  const gainNode = audioContext.createGain();
+  gainNode.gain.setValueAtTime(gain, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  osc.connect(gainNode);
+  gainNode.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + duration);
 }
