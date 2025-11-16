@@ -93,8 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = event.data;
     if (!data || data.source !== "pulse-grouping-lab" || data.type !== "resize") return;
     if (typeof data.height !== "number" || data.height <= 0) return;
-    const nextHeight = Math.max(MIN_HEIGHT, Math.round(data.height) + 20);
-    frame.style.height = `${nextHeight}px`;
+    const nextHeight = Math.max(MIN_HEIGHT, Math.round(data.height));
+    if (Math.abs(nextHeight - frame.clientHeight) > 4) {
+      frame.style.height = `${nextHeight}px`;
+    }
   });
 });
 </script>
