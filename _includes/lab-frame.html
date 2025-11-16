@@ -1,0 +1,17 @@
+{% assign lab_src = include.src | default: '' %}
+{% assign lab_title = include.title | default: 'Interactive Lab Frame' %}
+{% assign lab_height = include.height | default: '760' %}
+
+{% if lab_src != '' %}
+<section class="course-panel lab-embed">
+  <iframe
+      class="lab-frame"
+      src="{{ lab_src | relative_url }}"
+      title="{{ lab_title }}"
+      loading="lazy"
+      height="{{ lab_height }}"
+      scrolling="no"
+      aria-label="{{ lab_title }}">
+  </iframe>
+</section>
+{% endif %}

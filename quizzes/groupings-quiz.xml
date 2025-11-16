@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+  <question type="essay">
+    <name>
+      <text>Pulse Groupings Homework (All 4 Patterns)</text>
+    </name>
+
+    <questiontext format="html">
+      <text><![CDATA[
+      <p>
+      Submit <strong>four grouping patterns</strong> created in the Pulse Grouping Lab.  
+      Each pattern must be at least <strong>16 pulses</strong>.
+      </p>
+
+      <p><strong>Pattern Requirements:</strong></p>
+      <ol>
+        <li><strong>Pattern 1:</strong> Only 2-pulse groupings</li>
+        <li><strong>Pattern 2:</strong> Only 3-pulse groupings</li>
+        <li><strong>Pattern 3:</strong> Mixture of 2s and 3s</li>
+        <li><strong>Pattern 4:</strong> Hemiola interaction (one track in 2s, one in 3s)</li>
+      </ol>
+
+      <p><strong>For each pattern, include both:</strong></p>
+      <ul>
+        <li>1 TXT file exported from the lab</li>
+        <li>A brief (2–3 sentence) explanation of your choices and what you heard</li>
+      </ul>
+
+      <p><strong>You must upload 4 TXT files + enter 4 explanations.</strong></p>
+      ]]></text>
+    </questiontext>
+
+    <responseformat>editorfilepicker</responseformat>
+    <responsefieldlines>20</responsefieldlines>
+
+    <!-- allow 4 TXT uploads -->
+    <attachments>4</attachments>
+    <attachmentsrequired>4</attachmentsrequired>
+    <maxbytes>2097152</maxbytes>
+
+    <graderinfo format="html">
+      <text><![CDATA[
+      <p><strong>Grading (Pass/Revise):</strong></p>
+      <ul>
+        <li>All four patterns meet the structural requirements</li>
+        <li>TXT files show correct 2/3 grouping logic</li>
+        <li>Explanations are present and reflect basic listening</li>
+      </ul>
+      <p>No detailed analysis required. Award full marks if the submission is complete and coherent.</p>
+      ]]></text>
+    </graderinfo>
+
+    <defaultgrade>4</defaultgrade>
+
+  </question>
+
+</quiz>
