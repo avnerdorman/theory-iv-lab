@@ -7,16 +7,11 @@ import {
   downloadTextFile
 } from "./shared.js";
 
-const toneModulePromise = (typeof window !== "undefined" && window.Tone)
-  ? Promise.resolve(window.Tone)
-  : import("https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js").then(mod => {
-      const tone = mod.default || mod;
-      window.Tone = tone;
-      return tone;
-    });
+let audioContext = null;
+let masterGain = null;
+let schedulerId = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const Tone = await toneModulePromise;
+document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
   const pulsesPerRow = 16;
 
@@ -31,6 +26,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   let isPlaying = false;
   let currentStep = 0;
   let maxSteps = patternLength * repeats;
+
+  function getStepDurationMs() {
+    return (60 / tempo / 4) * 1000;
+  }
 
   const gridContainer = document.getElementById("grid-container");
 
@@ -49,31 +48,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const shareLinkBtn = document.getElementById("share-link-btn");
   const presetSelect = document.getElementById("preset-select");
   const loadPresetBtn = document.getElementById("load-preset-btn");
-
-  // --- Tone.js setup ---
-  Tone.Transport.bpm.value = tempo;
-  Tone.Transport.loop = false;
-
-  const pulseSynth = new Tone.MembraneSynth({
-    pitchDecay: 0.02,
-    octaves: 2,
-    envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.02 }
-  }).toDestination();
-
-  const trackASynth = new Tone.MetalSynth({
-    frequency: 200,
-    envelope: { attack: 0.001, decay: 0.2, release: 0.1 },
-    harmonicity: 5.1,
-    modulationIndex: 32,
-    resonance: 4000,
-    octaves: 1.5
-  }).toDestination();
-
-  const trackBSynth = new Tone.MembraneSynth({
-    pitchDecay: 0.03,
-    octaves: 2,
-    envelope: { attack: 0.001, decay: 0.2, sustain: 0, release: 0.05 }
-  }).toDestination();
 
   // --- Presets ---
   const PRESETS = {
@@ -163,8 +137,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     repeatsInput.value = repeats;
-    Tone.Transport.bpm.value = tempo;
+    tempoSlider.value = tempo;
+    tempoLabel.textContent = `${tempo} BPM`;
     maxSteps = patternLength * repeats;
+
+    if (isPlaying) {
+      stopPlayback();
+    }
 
     buildGrid();
   }
@@ -343,17 +322,17 @@ function applyClickToTrack(trackArr, index) {
 
   // --- Playback ---
 
-  const stepCallback = (time) => {
+  const stepCallback = () => {
     const patternIndex = currentStep % patternLength;
 
     if (pulseOn) {
-      pulseSynth.triggerAttackRelease("C3", "16n", time);
+      triggerPulseSound();
     }
     if (trackA[patternIndex]) {
-      trackASynth.triggerAttackRelease("G4", "16n", time);
+      triggerTrackSound(880);
     }
     if (trackB[patternIndex]) {
-      trackBSynth.triggerAttackRelease("C4", "16n", time);
+      triggerTrackSound(440);
     }
 
     updateCurrentPulseHighlight(currentStep);
@@ -364,27 +343,23 @@ function applyClickToTrack(trackArr, index) {
     }
   };
 
-  let repeatEventId = null;
-
   async function startPlayback() {
     if (isPlaying) return;
-    await Tone.start();
+    await ensureAudioContext();
     currentStep = 0;
     maxSteps = patternLength * repeats;
-    Tone.Transport.cancel();
-    Tone.Transport.position = 0;
-
-    repeatEventId = Tone.Transport.scheduleRepeat(stepCallback, "16n");
     isPlaying = true;
-    Tone.Transport.start();
     updatePlayButtonState();
+    stepCallback();
+    schedulerId = window.setInterval(stepCallback, getStepDurationMs());
   }
 
   function stopPlayback() {
     if (!isPlaying) return;
-    Tone.Transport.stop();
-    Tone.Transport.cancel();
-    repeatEventId = null;
+    if (schedulerId !== null) {
+      clearInterval(schedulerId);
+      schedulerId = null;
+    }
     isPlaying = false;
     currentStep = 0;
     updateCurrentPulseHighlight(-1);
@@ -393,13 +368,22 @@ function applyClickToTrack(trackArr, index) {
 
   function togglePlayPause() {
     if (!isPlaying) {
-      startPlayback();
+      startPlayback().catch(err => {
+        console.error("Unable to start audio", err);
+      });
     } else {
-      // Pause
-      Tone.Transport.pause();
-      isPlaying = false;
-      updatePlayButtonState();
+      pausePlayback();
     }
+  }
+
+  function pausePlayback() {
+    if (!isPlaying) return;
+    if (schedulerId !== null) {
+      clearInterval(schedulerId);
+      schedulerId = null;
+    }
+    isPlaying = false;
+    updatePlayButtonState();
   }
 
   function updateCurrentPulseHighlight(stepIndex) {
@@ -541,7 +525,6 @@ function applyClickToTrack(trackArr, index) {
     // Update UI to reflect loaded values
     tempoSlider.value = tempo;
     tempoLabel.textContent = `${tempo} BPM`;
-    Tone.Transport.bpm.value = tempo;
 
     // Pattern length dropdown
     let found = false;
@@ -575,8 +558,11 @@ function applyClickToTrack(trackArr, index) {
 
   tempoSlider.addEventListener("input", e => {
     tempo = parseInt(e.target.value, 10);
-    Tone.Transport.bpm.value = tempo;
     tempoLabel.textContent = `${tempo} BPM`;
+    if (isPlaying && schedulerId !== null) {
+      clearInterval(schedulerId);
+      schedulerId = window.setInterval(stepCallback, getStepDurationMs());
+    }
   });
 
   lengthSelect.addEventListener("change", e => {
@@ -615,3 +601,48 @@ function applyClickToTrack(trackArr, index) {
   loadFromQueryParams();
   buildGrid();
 });
+
+async function ensureAudioContext() {
+  if (typeof window === "undefined") return;
+  if (!audioContext) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    audioContext = new AudioCtx();
+    masterGain = audioContext.createGain();
+    masterGain.gain.value = 0.8;
+    masterGain.connect(audioContext.destination);
+  }
+  if (audioContext.state === "suspended") {
+    try {
+      await audioContext.resume();
+    } catch (err) {
+      console.error("Unable to resume AudioContext", err);
+    }
+  }
+}
+
+function triggerPulseSound() {
+  triggerClick(170, 0.45, 0.18);
+}
+
+function triggerTrackSound(freq) {
+  triggerClick(freq, 0.3, 0.12);
+}
+
+function triggerClick(frequency, volume, duration) {
+  if (!audioContext || !masterGain) return;
+  const now = audioContext.currentTime;
+  const osc = audioContext.createOscillator();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(frequency, now);
+
+  const gain = audioContext.createGain();
+  gain.gain.setValueAtTime(volume, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+
+  osc.start(now);
+  osc.stop(now + duration);
+}
