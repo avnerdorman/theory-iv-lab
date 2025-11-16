@@ -171,86 +171,91 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Grid building ---
   function buildGrid() {
-    gridContainer.innerHTML = "";
-    const rows = Math.ceil(patternLength / pulsesPerRow);
+  gridContainer.innerHTML = "";
 
-    for (let r = 0; r < rows; r++) {
-      const rowBlock = document.createElement("div");
-      rowBlock.className = "row-block";
+  const rowBlock = document.createElement("div");
+  rowBlock.className = "row-block";
 
-      const startIndex = r * pulsesPerRow;
-      const endIndex = Math.min(startIndex + pulsesPerRow, patternLength);
+  const label = document.createElement("div");
+  label.className = "row-label";
+  label.textContent = `Pulses 1–${patternLength}`;
+  rowBlock.appendChild(label);
 
-      const label = document.createElement("div");
-      label.className = "row-label";
-      label.textContent = `Pulses ${startIndex + 1}–${endIndex}`;
-      rowBlock.appendChild(label);
+  // ----- Pulse Row -----
+  const pulseRow = document.createElement("div");
+  pulseRow.className = "pulse-row";
 
-      // Pulse row
-      const pulseRow = document.createElement("div");
-      pulseRow.className = "pulse-row";
+  const pulseLabel = document.createElement("div");
+  pulseLabel.className = "pulse-label";
+  pulseLabel.textContent = "Pulse";
+  pulseRow.appendChild(pulseLabel);
 
-      const pulseLabel = document.createElement("div");
-      pulseLabel.className = "pulse-label";
-      pulseLabel.textContent = "Pulse";
-      pulseRow.appendChild(pulseLabel);
+  for (let i = 0; i < patternLength; i++) {
+    const dot = document.createElement("div");
+    dot.className = "pulse-dot";
+    dot.dataset.index = i.toString();
+    pulseRow.appendChild(dot);
+  }
 
-      for (let i = startIndex; i < endIndex; i++) {
-        const dot = document.createElement("div");
-        dot.className = "pulse-dot";
-        dot.dataset.index = i.toString();
-        pulseRow.appendChild(dot);
-      }
-      rowBlock.appendChild(pulseRow);
+  rowBlock.appendChild(pulseRow);
 
-      // Track A
-      const trackRowA = document.createElement("div");
-      trackRowA.className = "track-row";
+  // ----- Track A -----
+  const trackRowA = document.createElement("div");
+  trackRowA.className = "track-row";
 
-      const trackLabelA = document.createElement("div");
-      trackLabelA.className = "track-label";
-      trackLabelA.textContent = "Track A";
-      trackRowA.appendChild(trackLabelA);
+  const trackLabelA = document.createElement("div");
+  trackLabelA.className = "track-label";
+  trackLabelA.textContent = "Track A";
+  trackRowA.appendChild(trackLabelA);
 
-      for (let i = startIndex; i < endIndex; i++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.index = i.toString();
-        cell.dataset.track = "A";
-        if (trackA[i]) cell.classList.add("track-a-on");
-        cell.addEventListener("click", onCellClick);
-        cell.addEventListener("mouseenter", onCellHoverEnter);
-        cell.addEventListener("mouseleave", onCellHoverLeave);
-        trackRowA.appendChild(cell);
-      }
-      rowBlock.appendChild(trackRowA);
+  for (let i = 0; i < patternLength; i++) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.dataset.index = i.toString();
+    cell.dataset.track = "A";
+    if (trackA[i]) cell.classList.add("track-a-on");
 
-      // Track B
-      const trackRowB = document.createElement("div");
-      trackRowB.className = "track-row";
+    cell.addEventListener("click", onCellClick);
+    cell.addEventListener("mouseenter", onCellHoverEnter);
+    cell.addEventListener("mouseleave", onCellHoverLeave);
 
-      const trackLabelB = document.createElement("div");
-      trackLabelB.className = "track-label";
-      trackLabelB.textContent = "Track B";
-      trackRowB.appendChild(trackLabelB);
+    trackRowA.appendChild(cell);
+  }
 
-      for (let i = startIndex; i < endIndex; i++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.index = i.toString();
-        cell.dataset.track = "B";
-        if (trackB[i]) cell.classList.add("track-b-on");
-        cell.addEventListener("click", onCellClick);
-        cell.addEventListener("mouseenter", onCellHoverEnter);
-        cell.addEventListener("mouseleave", onCellHoverLeave);
-        trackRowB.appendChild(cell);
-      }
-      rowBlock.appendChild(trackRowB);
+  rowBlock.appendChild(trackRowA);
 
-      gridContainer.appendChild(rowBlock);
-    }
+  // ----- Track B -----
+  const trackRowB = document.createElement("div");
+  trackRowB.className = "track-row";
 
-    // Initially clear any highlight
+  const trackLabelB = document.createElement("div");
+  trackLabelB.className = "track-label";
+  trackLabelB.textContent = "Track B";
+  trackRowB.appendChild(trackLabelB);
+
+  for (let i = 0; i < patternLength; i++) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.dataset.index = i.toString();
+    cell.dataset.track = "B";
+    if (trackB[i]) cell.classList.add("track-b-on");
+
+    cell.addEventListener("click", onCellClick);
+    cell.addEventListener("mouseenter", onCellHoverEnter);
+    cell.addEventListener("mouseleave", onCellHoverLeave);
+
+    trackRowB.appendChild(cell);
+  }
+
+  rowBlock.appendChild(trackRowB);
+
+  gridContainer.appendChild(rowBlock);
+
+  updateCurrentPulseHighlight(-1);
+}
+
+
+  // Initially clear any highlight
     updateCurrentPulseHighlight(-1);
   }
 
@@ -270,18 +275,23 @@ document.addEventListener("DOMContentLoaded", () => {
     buildGrid();
   }
 
-  function applyClickToTrack(trackArr, index, mode) {
-    if (mode === "free") {
-      trackArr[index] = !trackArr[index];
-      return;
-    }
-    const span = parseInt(mode, 10); // 2 or 3
-    if (index + span <= patternLength) {
-      for (let i = 0; i < span; i++) {
-        trackArr[index + i] = true;
-      }
+function applyClickToTrack(trackArr, index, mode) {
+  if (mode === "free") {
+    trackArr[index] = !trackArr[index];
+    return;
+  }
+
+  const span = parseInt(mode, 10); // 2 or 3
+  if (index + span <= patternLength) {
+    // First pulse = onset
+    trackArr[index] = true;
+
+    // Remainder = silence
+    for (let i = 1; i < span; i++) {
+      trackArr[index + i] = false;
     }
   }
+}
 
   // --- Hover guides ---
 

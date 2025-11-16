@@ -54,7 +54,7 @@ theory-iv-lab/
 Clone the repo:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/theory-iv-lab.git
+git clone https://github.com/avnerdorman/theory-iv-lab.git
 
 Open any .html file directly in a browser (double-click from Finder/Explorer).
 
