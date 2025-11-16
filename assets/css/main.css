@@ -318,4 +318,4 @@ body.embedded .page-header {
         width: 100%;
         padding: 6px 0;
     }
-}
+}   /* ← THIS WAS MISSING */
