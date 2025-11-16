@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPlaying = false;
   let currentStep = 0;
   let maxSteps = patternLength * repeats;
+  let infiniteRepeats = false;
 
   function getStepDurationMs() {
     return (60 / tempo / 4) * 1000;
@@ -39,7 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const tempoSlider = document.getElementById("tempo-slider");
   const tempoLabel = document.getElementById("tempo-label");
   const lengthSelect = document.getElementById("length-select");
+  const lengthCustomInput = document.getElementById("length-custom");
   const repeatsInput = document.getElementById("repeats-input");
+  const repeatInfiniteToggle = document.getElementById("repeat-infinite");
   const pulseToggle = document.getElementById("pulse-toggle");
   const exportBtn = document.getElementById("export-btn");
   const exportArea = document.getElementById("export-area");
@@ -110,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     patternLength = p.patternLength;
     tempo = p.tempo;
     repeats = p.repeats;
+    infiniteRepeats = false;
     trackA = p.trackA.slice();
     trackB = p.trackB.slice();
 
@@ -120,25 +124,28 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set pattern length in select if present
     let found = false;
     for (const opt of lengthSelect.options) {
-      if (parseInt(opt.value, 10) === patternLength) {
+      if (opt.value !== "custom" && parseInt(opt.value, 10) === patternLength) {
         lengthSelect.value = opt.value;
         found = true;
         break;
       }
     }
     if (!found) {
-      // Fall back to 16 and adjust arrays
-      patternLength = 16;
+      patternLength = clamp(patternLength, 1, 36);
       trackA.length = patternLength;
       trackB.length = patternLength;
       trackA = trackA.map(v => !!v);
       trackB = trackB.map(v => !!v);
-      lengthSelect.value = "16";
+      lengthSelect.value = "custom";
+      lengthCustomInput.classList.remove("hidden");
+      lengthCustomInput.value = patternLength.toString();
+    } else {
+      lengthCustomInput.classList.add("hidden");
     }
 
     repeatsInput.value = repeats;
-    tempoSlider.value = tempo;
-    tempoLabel.textContent = `${tempo} BPM`;
+    repeatInfiniteToggle.checked = false;
+    repeatsInput.disabled = false;
     maxSteps = patternLength * repeats;
 
     if (isPlaying) {
@@ -150,11 +157,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Pattern init ---
   function initPattern(len) {
-    patternLength = len;
+    patternLength = clamp(len, 1, 36);
     trackA = new Array(patternLength).fill(false);
     trackB = new Array(patternLength).fill(false);
     currentStep = 0;
-    maxSteps = patternLength * repeats;
+    maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
   }
 
   // --- Grid building ---
@@ -338,7 +345,7 @@ function applyClickToTrack(trackArr, index) {
     updateCurrentPulseHighlight(currentStep);
 
     currentStep++;
-    if (currentStep >= maxSteps) {
+    if (!infiniteRepeats && currentStep >= maxSteps) {
       stopPlayback();
     }
   };
@@ -347,7 +354,7 @@ function applyClickToTrack(trackArr, index) {
     if (isPlaying) return;
     await ensureAudioContext();
     currentStep = 0;
-    maxSteps = patternLength * repeats;
+    maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
     isPlaying = true;
     updatePlayButtonState();
     stepCallback();
@@ -420,7 +427,7 @@ function applyClickToTrack(trackArr, index) {
     const lines = [];
     lines.push(`Tempo: ${tempo} BPM`);
     lines.push(`Pattern length: ${patternLength} pulses`);
-    lines.push(`Repeats: ${repeats}`);
+    lines.push(`Repeats: ${infiniteRepeats ? "∞ (loop)" : repeats}`);
     lines.push("");
 
     const LABEL_WIDTH = 10;
@@ -457,6 +464,7 @@ function applyClickToTrack(trackArr, index) {
       tempo,
       patternLength,
       repeats,
+      infiniteRepeats,
       trackA: trackA.slice(),
       trackB: trackB.slice()
     };
@@ -468,7 +476,7 @@ function applyClickToTrack(trackArr, index) {
     const base = window.location.origin + window.location.pathname;
     const params = new URLSearchParams();
     params.set("len", patternLength.toString());
-    params.set("rep", repeats.toString());
+    params.set("rep", infiniteRepeats ? "inf" : repeats.toString());
     params.set("tempo", tempo.toString());
     params.set("a", encodeTrackToBits(trackA));
     params.set("b", encodeTrackToBits(trackB));
@@ -502,7 +510,12 @@ function applyClickToTrack(trackArr, index) {
       patternLength = len;
     }
     if (params.rep) {
-      repeats = clamp(parseInt(params.rep, 10) || 8, 1, 32);
+      if (params.rep === "inf") {
+        infiniteRepeats = true;
+      } else {
+        repeats = clamp(parseInt(params.rep, 10) || 8, 1, 32);
+        infiniteRepeats = false;
+      }
     }
     if (params.tempo) {
       tempo = clamp(parseInt(params.tempo, 10) || 90, 40, 200);
@@ -532,17 +545,23 @@ function applyClickToTrack(trackArr, index) {
       }
     }
     if (!found) {
-      // If patternLength not in dropdown, clamp to 32 and adjust arrays
-      patternLength = clamp(patternLength, 1, 32);
+      // Allow custom length up to 36
+      patternLength = clamp(patternLength, 1, 36);
       trackA.length = patternLength;
       trackB.length = patternLength;
       trackA = trackA.map(v => !!v);
       trackB = trackB.map(v => !!v);
-      lengthSelect.value = patternLength.toString();
+      lengthSelect.value = "custom";
+      lengthCustomInput.classList.remove("hidden");
+      lengthCustomInput.value = patternLength.toString();
+    } else {
+      lengthCustomInput.classList.add("hidden");
     }
 
     repeatsInput.value = repeats;
-    maxSteps = patternLength * repeats;
+    repeatInfiniteToggle.checked = infiniteRepeats;
+    repeatsInput.disabled = infiniteRepeats;
+    maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
   }
 
   // --- Wiring up controls ---
@@ -562,8 +581,24 @@ function applyClickToTrack(trackArr, index) {
   });
 
   lengthSelect.addEventListener("change", e => {
+    if (e.target.value === "custom") {
+      lengthCustomInput.classList.remove("hidden");
+      lengthCustomInput.focus();
+      return;
+    }
+    lengthCustomInput.classList.add("hidden");
     const len = parseInt(e.target.value, 10);
     initPattern(len);
+    buildGrid();
+  });
+
+  lengthCustomInput.addEventListener("change", e => {
+    lengthSelect.value = "custom";
+    let val = parseInt(e.target.value, 10);
+    if (isNaN(val)) val = patternLength;
+    val = clamp(val, 1, 36);
+    e.target.value = val;
+    initPattern(val);
     buildGrid();
   });
 
@@ -573,7 +608,13 @@ function applyClickToTrack(trackArr, index) {
     val = clamp(val, 1, 32);
     repeats = val;
     e.target.value = val;
-    maxSteps = patternLength * repeats;
+    maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
+  });
+
+  repeatInfiniteToggle.addEventListener("change", e => {
+    infiniteRepeats = e.target.checked;
+    repeatsInput.disabled = infiniteRepeats;
+    maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
   });
 
   pulseToggle.addEventListener("change", e => {

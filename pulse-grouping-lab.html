@@ -48,12 +48,18 @@
                     <option value="16" selected>16 pulses</option>
                     <option value="24">24 pulses</option>
                     <option value="32">32 pulses</option>
+                    <option value="custom">Custom…</option>
                 </select>
+                <input id="length-custom" type="number" min="1" max="36" value="16" class="hidden" aria-label="Custom pattern length">
             </div>
 
             <div class="field-block">
                 <label for="repeats-input">Repeats:</label>
                 <input id="repeats-input" type="number" min="1" max="32" value="8">
+                <label class="inline-checkbox">
+                    <input type="checkbox" id="repeat-infinite">
+                    Infinite
+                </label>
             </div>
 
             <div class="field-block checkbox-block">
