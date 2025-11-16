@@ -3,7 +3,7 @@ layout: week
 title: "Grouping Pulses and Hemiola"
 week: 1
 ---
-<div class="lesson-content">
+<div class="lesson-content" markdown="1">
 
 Once we establish an even pulse, the next step is to organize it into groups of pulses. This is the beginning of rhythm.
 
@@ -71,7 +71,7 @@ It will prepare us for later topics such as Euclidean rhythms, bi-rhythms, timel
   </iframe>
 </section>
 
-<div class="lesson-content">
+<div class="lesson-content" markdown="1">
 
 ## Notes
 <sup>1</sup> Bolton, Thaddeus L. “Rhythm.” *The American Journal of Psychology* 6, no. 2 (1894): 145–238. 
