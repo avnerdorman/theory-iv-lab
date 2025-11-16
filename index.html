@@ -1,148 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Music Theory IV — MUS_CLAS 242</title>
-    <link rel="stylesheet" href="assets/css/main.css" />
+  <meta charset="UTF-8">
+  <title>Music in Time – Pulse</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <style>
+    /* Minimal layout helpers; you can move these into main.css if you like */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+    }
+    .page-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 40px 16px;
+    }
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 0.75em;
+    }
+    h2 {
+      margin-top: 1.8em;
+      margin-bottom: 0.5em;
+      font-size: 1.6rem;
+    }
+    h3 {
+      margin-top: 1.4em;
+      margin-bottom: 0.4em;
+      font-size: 1.2rem;
+    }
+    p {
+      margin: 0.4em 0;
+    }
+    ul {
+      margin: 0.6em 0 0.6em 1.4em;
+    }
+    /* Pulse visualizer block */
+    .pulse-visualizer-block {
+      margin: 1.4em 0;
+      padding: 12px 12px 16px 12px;
+      border-radius: 6px;
+      background: #f4f4f4;
+    }
+    #pulseCanvas {
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 800px;
+      display: block;
+      margin-top: 8px;
+    }
+    #controls {
+      margin-bottom: 8px;
+      font-family: inherit;
+    }
+    #controls label {
+      margin-left: 12px;
+      font-size: 0.9rem;
+    }
+    #tempoSlider {
+      vertical-align: middle;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page-wrapper">
+    <h1>Music in Time – Pulse</h1>
 
-    <!-- ===================== -->
-    <!-- TOP NAV -->
-    <!-- ===================== -->
-    <header class="top-nav">
-        <div class="nav-left">Music Theory IV — MUS_CLAS 242</div>
-        <nav class="nav-right">
-            <a href="index.html">Home</a>
-            <a href="weeks/week1/pulse.html">Week 1</a>
-            <a class="locked">Week 2</a>
-            <a class="locked">Week 3</a>
-            <a class="locked">Week 4</a>
-            <a class="locked">Week 5</a>
-            <a class="locked">Week 6</a>
-            <a class="locked">Week 7</a>
-            <a class="locked">Week 8</a>
-            <a class="locked">Week 9</a>
-            <a class="locked">Week 10</a>
-            <a class="locked">Week 11</a>
-            <a class="locked">Week 12</a>
-            <a class="locked">Week 13</a>
-            <a class="locked">Week 14</a>
-        </nav>
-    </header>
+    <h2>The Seven Liberal Arts</h2>
 
-    <!-- ===================== -->
-    <!-- MAIN CONTENT -->
-    <!-- ===================== -->
-    <main class="content-container">
+    <p>The original liberal arts consisted of seven areas of study divided into a lower division and an upper-division</p>
 
-        <h1>Music Theory IV — MUS_CLAS 242</h1>
-        <p>This site hosts the materials, labs, and interactive tools for the Spring 2026 semester of Music Theory IV (MUS_CLAS 242). Only Week 1 is accessible at the start of term; additional weeks will be unlocked as the semester progresses.</p>
+    <p>The Trivium (lower division) consisted of Grammar, Logic, and Rhetoric</p>
 
-        <!-- COURSE OVERVIEW -->
-        <section class="course-panel">
-            <h2>Course Overview</h2>
-            <p>
-                In this course we will explore rhythm, meter, pulse, grouping, Euclidean structures, 
-                contour, post-tonal materials, and compositional techniques in contemporary and 
-                world musical traditions. You will analyze, compose, perform, and listen critically 
-                using both traditional notation and alternative rhythmic representations.
-            </p>
-            <p>
-                This site includes interactive tools (pulse visualizer, grouping lab, rhythmic sequencers), 
-                readings, listening, and assignments designed to build intuition and technical skill in 
-                temporal structures.
-            </p>
-        </section>
+    <p>The Quadrivium (upper division) consisted of Arithmetic, Geometry, Music, and Astronomy</p>
 
-        <!-- WEEKS GRID -->
-        <section class="course-panel">
-            <h2>Weeks</h2>
+    <h2>Number in….</h2>
 
-            <div class="week-grid">
+    <p>The idea behind the upper-division was that students would learn: </p>
 
-                <!-- WEEK 1 -->
-                <div class="week-card">
-                    <h3>Week 1</h3>
-                    <span class="badge-open">Open</span>
-                    <ul>
-                        <li><a href="weeks/week1/pulse.html">Music in Time — Pulse</a></li>
-                        <li><a href="weeks/week1/pulse-grouping.html">Grouping Pulses</a></li>
-                        <li><a href="pulse-grouping-lab.html">Pulse Grouping Lab (interactive)</a></li>
-                    </ul>
-                </div>
+    <ul>
+      <li><strong>Arithmetic</strong> - pure number</li>
+      <li><strong>Geometry</strong> - number in space</li>
+      <li><strong>Music</strong> - number in time</li>
+      <li><strong>Astronomy</strong> - number in space and time</li>
+    </ul>
 
-                <!-- WEEKS 2–14 (Locked) -->
-                <div class="week-card locked">
-                    <h3>Week 2</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <h2>Number in Time</h2>
 
-                <div class="week-card locked">
-                    <h3>Week 3</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>How do we conceptualize time? </p>
+    <p>How do we measure time? </p>
+    <p>What are we measuring?</p>
+    <p>What is the basic unit of music? What is the unit of time?</p>
 
-                <div class="week-card locked">
-                    <h3>Week 4</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <h2>PULSE</h2>
 
-                <div class="week-card locked">
-                    <h3>Week 5</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>Before we define pulse in words, here is a simple visualization of what pulse sounds and looks like. Try tapping along with the center line.</p>
 
-                <div class="week-card locked">
-                    <h3>Week 6</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <!-- Pulse visualizer -->
+    <div class="pulse-visualizer-block">
+      <div id="controls">
+        <button id="toggleBtn">Start Pulse</button>
+        <label>
+          Tempo:
+          <input type="range" id="tempoSlider" min="40" max="160" value="100">
+          <span id="tempoLabel">100 BPM</span>
+        </label>
+      </div>
 
-                <div class="week-card locked">
-                    <h3>Week 7</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+      <canvas id="pulseCanvas" width="800" height="120"></canvas>
+    </div>
 
-                <div class="week-card locked">
-                    <h3>Week 8</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>Tap along with the center line once the visualization starts. Feel the steady pulse.</p>
 
-                <div class="week-card locked">
-                    <h3>Week 9</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <h2>definitions</h2>
 
-                <div class="week-card locked">
-                    <h3>Week 10</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <h3>1. Simple</h3>
 
-                <div class="week-card locked">
-                    <h3>Week 11</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>A pulse is a simple sonic event that is repeated at regular intervals</p>
 
-                <div class="week-card locked">
-                    <h3>Week 12</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>Time is usually measured by counting pulses, e.g., seconds, minutes, hours, days, weeks, etc…</p>
 
-                <div class="week-card locked">
-                    <h3>Week 13</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>Digital metronomes and clocks are ideal generators of pulses (as long as we avoid any settings that provide accents)</p>
 
-                <div class="week-card locked">
-                    <h3>Week 14</h3>
-                    <span class="badge-locked">Locked</span>
-                </div>
+    <p>Pulse is a basic element of music from around the world. It is not unique to Western music. </p>
 
-            </div>
-        </section>
+    <p>Our notation system is not the most intuitive in representing the pulse. We will explore other possible representations. </p>
 
-    </main>
+    <h3>2. Neutral</h3>
 
+    <p>There is no difference between one pulsation and another.</p>
+
+    <p>Any arrangement of beats at a higher level is excluded from the definition of the pulse.</p>
+
+    <p>Any accent (phenomenological or metric) is outside of the pulse itself.</p>
+
+    <h3>3. Constant</h3>
+
+    <p>The pulse is the only invariable element of a piece (or at least of each substantial section of a piece). </p>
+
+    <p>In most musical traditions the pulse remains constant throughout a complete section of a piece (i.e., each movement, song, etc.)</p>
+
+    <p>The pulse is indifferent to other changes in the music (rhythmic, metric, tonal, etc.)</p>
+
+    <p>Any constant element in the piece is linearly related to the pulse. For example, if the pulse occurs every second and another element of the piece occurs every other second they are related by a factor of 2. </p>
+
+    <p>Even when complex metric modulations occur, the pulse remains steady and constant, at least in some way. </p>
+
+    <h3>4. Intrinsic</h3>
+
+    <p>The pulse is inherent in the music itself and specific to each piece: this makes it always a relevant factor. </p>
+
+    <p>While a pulse can underly many different pieces, a piece cannot have two pulses at the same time. </p>
+
+    <h3>5. A Reference Unit</h3>
+
+    <p>All temporal events (durations of notes, beginnings of notes, ends of notes) are perceived in relation to the pulse.  </p>
+
+    <p>In notated music, all temporal events are notated in relation to the pulse. </p>
+
+    <h3>6. Determining the Tempo</h3>
+
+    <p>The pulse determines the tempo by setting the internal flow of the music it underlies.</p>
+
+    <p>This is easy to hear in the music of many traditions around the world (African Drumming, Blue Grass, Waltzes and Marches, to name a few).</p>
+
+    <p>In notated music, the length of notes is designated as the relation of the pulse to a minute (a universally accepted pulse in Western cultures). For example, quarter = 120 means that there are 120 notated quarters in the span of one minute. The quarter is linearly related to the minute.</p>
+
+    <h3>To summarize, pulse is:</h3>
+
+    <ul>
+      <li>Simple</li>
+      <li>Neutral</li>
+      <li>Constant</li>
+      <li>Intrinsic</li>
+      <li>A Reference Unit</li>
+      <li>Determining the Tempo</li>
+    </ul>
+
+    <p>Outside of academic study, musicians often use terms like beat, pulse, meter, and rhythm interchangeably. That might work fine in informal settings, but when we analyze temporal structures in a rigorous way we need to separate these ideas clearly. Pulse is frequently mistaken for other concepts, so here is what pulse is not.</p>
+
+    <h2>Pulse is not</h2>
+
+    <p>Pulse is not Meter - Meter is not neutral, it is hierarchical. Meter is not constant (it often changes). Meter is not always simple. Meter is not intrinsic - meter is a notational aid and a tool we use to discuss music. It can also be a useful abstraction when composers create music. The meter does not determine the tempo. </p>
+
+    <p>Pulse is not the beat - while the two terms can be used as synonyms in day-to-day conversation, they are not synonymous in the context of music performance, music theory, or musicology. Beats are not neutral (the first beat is not the same as the second or the third). Beats are not always constant (in a 7/8 bar we say that one beat is three 8ths in duration and the other two are the duration of a quarter). The beat refers to the pulse and takes the tempo from the pulse.</p>
+
+    <p>Pulse is not rhythm - rhythm is the general term that encompasses all temporal aspects of music - including the pulse and everything the pulse isn’t. </p>
+
+    <h2>Further reading: </h2>
+
+    <p>Arom, Simha, Martin Thom, Barbara Tuckett, Raymond Boyd, and György Ligeti. <em>African Polyphony and Polyrhythm Musical Structure and Methodology.</em> Cambridge: Cambridge University Press, 1991.</p>
+  </div>
+
+  <script>
+    // Pulse visualizer JavaScript (unchanged from your working version)
+    let audioContext = null;
+    let pulseIntervalId = null;
+    let isRunning = false;
+
+    function initAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playClick() {
+      if (!audioContext) return;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.frequency.value = 1000;
+      gain.gain.value = 0.3;
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      const now = audioContext.currentTime;
+      osc.start(now);
+      osc.stop(now + 0.03);
+    }
+
+    const canvas = document.getElementById('pulseCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const pixelsPerPulse = 60;
+
+    let tempoBPM = 100;
+    let startTime = performance.now();
+
+    function drawFrame() {
+      const now = performance.now();
+      const intervalMs = 60000 / tempoBPM;
+      const phase = ((now - startTime) % intervalMs) / intervalMs;
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      ctx.beginPath();
+      ctx.moveTo(0, centerY);
+      ctx.lineTo(canvas.width, centerY);
+      ctx.strokeStyle = '#444';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, 0);
+      ctx.lineTo(centerX, canvas.height);
+      ctx.strokeStyle = '#888';
+      ctx.stroke();
+
+      const maxTicks = Math.ceil(canvas.width / pixelsPerPulse) + 2;
+      for (let n = -maxTicks; n <= maxTicks; n++) {
+        const x = centerX + n * pixelsPerPulse - phase * pixelsPerPulse;
+        if (x < 0 || x > canvas.width) continue;
+        ctx.beginPath();
+        ctx.moveTo(x, centerY-10);
+        ctx.lineTo(x, centerY+10);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(drawFrame);
+    }
+
+    document.getElementById('tempoSlider').addEventListener('input', e => {
+      tempoBPM = Number(e.target.value);
+      document.getElementById('tempoLabel').textContent = tempoBPM + ' BPM';
+      startTime = performance.now();
+      if (isRunning) restartPulseInterval();
+    });
+
+    function restartPulseInterval() {
+      if (pulseIntervalId) clearInterval(pulseIntervalId);
+      const intervalMs = 60000 / tempoBPM;
+      pulseIntervalId = setInterval(playClick, intervalMs);
+    }
+
+    document.getElementById('toggleBtn').addEventListener('click', () => {
+      if (!isRunning) {
+        initAudio();
+        startTime = performance.now();
+        restartPulseInterval();
+        isRunning = true;
+        document.getElementById('toggleBtn').textContent = 'Stop Pulse';
+      } else {
+        clearInterval(pulseIntervalId);
+        pulseIntervalId = null;
+        isRunning = false;
+        document.getElementById('toggleBtn').textContent = 'Start Pulse';
+      }
+    });
+
+    requestAnimationFrame(drawFrame);
+  </script>
 </body>
 </html>
