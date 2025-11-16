@@ -1,5 +1,4 @@
 // assets/js/pulse-grouping.js
-import * as Tone from "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js";
 import {
   getQueryParams,
   encodeTrackToBits,
@@ -8,7 +7,16 @@ import {
   downloadTextFile
 } from "./shared.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+const toneModulePromise = (typeof window !== "undefined" && window.Tone)
+  ? Promise.resolve(window.Tone)
+  : import("https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js").then(mod => {
+      const tone = mod.default || mod;
+      window.Tone = tone;
+      return tone;
+    });
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const Tone = await toneModulePromise;
   // --- Constants & state ---
   const pulsesPerRow = 16;
 
