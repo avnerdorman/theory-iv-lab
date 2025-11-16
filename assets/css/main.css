@@ -85,28 +85,6 @@ h1, h2, h3 {
 
 
 /* ============================= */
-/* TWO-COLUMN LAYOUT             */
-/* ============================= */
-
-.layout-two-col {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.left-col {
-    display: flex;
-    flex-direction: column;
-}
-
-.right-col {
-    overflow-x: auto;
-}
-
-
-/* ============================= */
 /* BUTTONS                       */
 /* ============================= */
 
@@ -139,6 +117,15 @@ h1, h2, h3 {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.top-preset-row {
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.top-preset-row label {
+    font-weight: 600;
 }
 
 

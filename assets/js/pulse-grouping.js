@@ -329,10 +329,10 @@ function applyClickToTrack(trackArr, index) {
       triggerPulseSound();
     }
     if (trackA[patternIndex]) {
-      triggerTrackSound(880);
+      triggerTrackSound(true);
     }
     if (trackB[patternIndex]) {
-      triggerTrackSound(440);
+      triggerTrackSound(false);
     }
 
     updateCurrentPulseHighlight(currentStep);
@@ -423,26 +423,22 @@ function applyClickToTrack(trackArr, index) {
     lines.push(`Repeats: ${repeats}`);
     lines.push("");
 
-    // Pulse line
-    let pulseLine = "Pulses: ";
-    for (let i = 0; i < patternLength; i++) {
-      pulseLine += "● ";
-    }
-    lines.push(pulseLine.trim());
+    const LABEL_WIDTH = 10;
+    const padLabel = label => label.padEnd(LABEL_WIDTH, " ");
 
-    // Track A
-    let aLine = "Track A: ";
-    for (let i = 0; i < patternLength; i++) {
-      aLine += (trackA[i] ? "X " : ". ");
-    }
-    lines.push(aLine.trim());
+    const pulseRow =
+      padLabel("Pulses:") +
+      Array.from({ length: patternLength }, () => "● ").join("").trimEnd();
+    const trackARow =
+      padLabel("Track A:") +
+      trackA.map(v => (v ? "X " : ". ")).join("").trimEnd();
+    const trackBRow =
+      padLabel("Track B:") +
+      trackB.map(v => (v ? "X " : ". ")).join("").trimEnd();
 
-    // Track B
-    let bLine = "Track B: ";
-    for (let i = 0; i < patternLength; i++) {
-      bLine += (trackB[i] ? "X " : ". ");
-    }
-    lines.push(bLine.trim());
+    lines.push(pulseRow);
+    lines.push(trackARow);
+    lines.push(trackBRow);
 
     return lines.join("\n");
   }
@@ -622,27 +618,54 @@ async function ensureAudioContext() {
 }
 
 function triggerPulseSound() {
-  triggerClick(170, 0.45, 0.18);
-}
-
-function triggerTrackSound(freq) {
-  triggerClick(freq, 0.3, 0.12);
-}
-
-function triggerClick(frequency, volume, duration) {
   if (!audioContext || !masterGain) return;
   const now = audioContext.currentTime;
+
+  // Kick-like thump
   const osc = audioContext.createOscillator();
-  osc.type = "triangle";
-  osc.frequency.setValueAtTime(frequency, now);
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(140, now);
+  osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
 
   const gain = audioContext.createGain();
-  gain.gain.setValueAtTime(volume, now);
-  gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  gain.gain.setValueAtTime(0.8, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
 
   osc.connect(gain);
   gain.connect(masterGain);
 
   osc.start(now);
-  osc.stop(now + duration);
+  osc.stop(now + 0.2);
+}
+
+function triggerTrackSound(isHigh = false) {
+  if (!audioContext || !masterGain) return;
+  const now = audioContext.currentTime;
+
+  // Noise burst for hi-hat / click
+  const bufferSize = audioContext.sampleRate * 0.1;
+  const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (isHigh ? 0.6 : 0.4);
+  }
+
+  const noise = audioContext.createBufferSource();
+  noise.buffer = noiseBuffer;
+
+  const bandpass = audioContext.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = isHigh ? 8000 : 2000;
+  bandpass.Q.value = 1;
+
+  const gain = audioContext.createGain();
+  gain.gain.setValueAtTime(isHigh ? 0.5 : 0.35, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + (isHigh ? 0.08 : 0.12));
+
+  noise.connect(bandpass);
+  bandpass.connect(gain);
+  gain.connect(masterGain);
+
+  noise.start(now);
+  noise.stop(now + 0.15);
 }
