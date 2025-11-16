@@ -3,7 +3,7 @@
 /**
  * Parse URL query parameters into an object.
  */
-function getQueryParams() {
+export function getQueryParams() {
   const params = {};
   const search = window.location.search;
   if (!search || search.length <= 1) return params;
@@ -22,14 +22,14 @@ function getQueryParams() {
 /**
  * Encode a boolean track array as a simple "1010..." bit string.
  */
-function encodeTrackToBits(trackArr) {
+export function encodeTrackToBits(trackArr) {
   return trackArr.map(v => (v ? "1" : "0")).join("");
 }
 
 /**
  * Decode a bit string ("1010...") into a boolean track array.
  */
-function decodeBitsToTrack(bits, length) {
+export function decodeBitsToTrack(bits, length) {
   const result = new Array(length).fill(false);
   for (let i = 0; i < length && i < bits.length; i++) {
     result[i] = bits[i] === "1";
@@ -40,14 +40,14 @@ function decodeBitsToTrack(bits, length) {
 /**
  * Clamp a number between min and max.
  */
-function clamp(value, min, max) {
+export function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
 /**
  * Download a text file with given filename and content.
  */
-function downloadTextFile(filename, content) {
+export function downloadTextFile(filename, content) {
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

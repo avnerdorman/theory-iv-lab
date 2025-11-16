@@ -1,4 +1,12 @@
 // assets/js/pulse-grouping.js
+import * as Tone from "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js";
+import {
+  getQueryParams,
+  encodeTrackToBits,
+  decodeBitsToTrack,
+  clamp,
+  downloadTextFile
+} from "./shared.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
@@ -26,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const lengthSelect = document.getElementById("length-select");
   const repeatsInput = document.getElementById("repeats-input");
   const pulseToggle = document.getElementById("pulse-toggle");
-  const clearABtn = document.getElementById("clear-a");
-  const clearBBtn = document.getElementById("clear-b");
   const exportBtn = document.getElementById("export-btn");
   const exportArea = document.getElementById("export-area");
   const downloadTxtBtn = document.getElementById("download-txt-btn");
@@ -198,9 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const trackRowA = document.createElement("div");
   trackRowA.className = "track-row";
 
-  const trackLabelA = document.createElement("div");
-  trackLabelA.className = "track-label";
-  trackLabelA.textContent = "Track A";
+  const trackLabelA = createTrackLabel("Track A", () => {
+    trackA = new Array(patternLength).fill(false);
+    buildGrid();
+  });
   trackRowA.appendChild(trackLabelA);
 
   for (let i = 0; i < patternLength; i++) {
@@ -223,9 +230,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const trackRowB = document.createElement("div");
   trackRowB.className = "track-row";
 
-  const trackLabelB = document.createElement("div");
-  trackLabelB.className = "track-label";
-  trackLabelB.textContent = "Track B";
+  const trackLabelB = createTrackLabel("Track B", () => {
+    trackB = new Array(patternLength).fill(false);
+    buildGrid();
+  });
   trackRowB.appendChild(trackLabelB);
 
   for (let i = 0; i < patternLength; i++) {
@@ -247,6 +255,28 @@ document.addEventListener("DOMContentLoaded", () => {
   gridContainer.appendChild(rowBlock);
 
   updateCurrentPulseHighlight(-1);
+}
+
+function createTrackLabel(labelText, clearHandler) {
+  const label = document.createElement("div");
+  label.className = "track-label";
+
+  const textSpan = document.createElement("span");
+  textSpan.textContent = labelText;
+  label.appendChild(textSpan);
+
+  const clearBtn = document.createElement("button");
+  clearBtn.className = "btn tiny";
+  clearBtn.type = "button";
+  clearBtn.textContent = "Clear";
+  clearBtn.addEventListener("click", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    clearHandler();
+  });
+  label.appendChild(clearBtn);
+
+  return label;
 }
 
 
@@ -558,16 +588,6 @@ function applyClickToTrack(trackArr, index) {
 
   pulseToggle.addEventListener("change", e => {
     pulseOn = e.target.checked;
-  });
-
-  clearABtn.addEventListener("click", () => {
-    trackA = new Array(patternLength).fill(false);
-    buildGrid();
-  });
-
-  clearBBtn.addEventListener("click", () => {
-    trackB = new Array(patternLength).fill(false);
-    buildGrid();
   });
 
   exportBtn.addEventListener("click", exportPattern);

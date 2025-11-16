@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulse Grouping Lab</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230077ff'/%3E%3C/svg%3E">
 
     <link rel="stylesheet" href="assets/css/main.css">
 
-    <!-- Tone.js -->
-    <script type="module">
-        import * as Tone from "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/tone.js";
-        window.Tone = Tone;
-    </script>    <!-- Shared helpers -->
-    <script src="assets/js/shared.js" defer></script>
-
-    <!-- Main JS -->
-    <script src="assets/js/pulse-grouping.js" defer></script>
+    <!-- Main JS (imports Tone.js + helpers) -->
+    <script type="module" src="assets/js/pulse-grouping.js"></script>
 </head>
 
 <body>
@@ -84,20 +78,7 @@
         <!-- LEFT COLUMN -->
         <div class="left-col panel">
 
-            <h2 class="section-title">Track Controls</h2>
-
-            <div class="track-actions">
-
-                <div class="track-control">
-                    <h3>Track A</h3>
-                    <button id="clear-a" class="btn small">Clear A</button>
-                </div>
-
-                <div class="track-control">
-                    <h3>Track B</h3>
-                    <button id="clear-b" class="btn small">Clear B</button>
-                </div>
-            </div>
+            <h2 class="section-title">Presets & Tips</h2>
 
             <p class="panel-hint">
                 Click Track A or B cells to toggle any pulse freely. Use presets to jump-start ideas, then edit directly.
