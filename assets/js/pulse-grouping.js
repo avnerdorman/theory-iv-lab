@@ -38,6 +38,11 @@ const SOUND_LIBRARY = {
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
   const pulsesPerRow = 16;
+  const initialParams = getQueryParams();
+  const embedMode = initialParams.embed === "1";
+  if (embedMode && document.body) {
+    document.body.classList.add("embedded");
+  }
 
   let patternLength = 16;
   let repeats = 8;
@@ -553,8 +558,7 @@ function applyClickToTrack(trackArr, index) {
 
   // --- URL param loading ---
 
-  function loadFromQueryParams() {
-    const params = getQueryParams();
+  function loadFromQueryParams(params = initialParams) {
     if (!params || Object.keys(params).length === 0) return;
 
     if (params.len) {

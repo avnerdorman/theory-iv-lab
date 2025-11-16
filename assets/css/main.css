@@ -10,6 +10,10 @@ body {
     background: #fafafa;
 }
 
+body.embedded {
+    background: transparent;
+}
+
 h1, h2, h3 {
     margin: 0;
     padding: 0;
@@ -37,6 +41,24 @@ h1, h2, h3 {
     max-width: 1200px;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+body.embedded .panel {
+    margin: 18px 0;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body.embedded .section.panel {
+    padding-top: 4px;
+}
+
+body.embedded .page-header {
+    display: none;
 }
 
 .section-title {
