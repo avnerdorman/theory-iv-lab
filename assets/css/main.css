@@ -150,7 +150,8 @@ body.embedded .page-header {
 }
 
 .site-nav .nav-links details[open] > summary,
-.site-nav .nav-links summary:hover {
+.site-nav .nav-links summary:hover,
+.site-nav .nav-links summary.active {
     color: #0066cc;
     border-bottom-color: #0066cc;
 }
@@ -212,6 +213,7 @@ body.embedded .page-header {
     max-width: 820px;
     margin: 0 auto;
     line-height: 1.65;
+    padding: 0 12px 12px;
 }
 
 .content-container h1,
@@ -289,7 +291,7 @@ body.embedded .page-header {
 .lab-frame {
     display: block;
     width: 100%;
-    min-height: 940px;
+    min-height: 760px;
     border: none;
     border-radius: 14px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.12);

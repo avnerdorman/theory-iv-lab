@@ -3,16 +3,16 @@
   <ul class="nav-links">
     <li><a href="{{ '/' | relative_url }}">Home</a></li>
     <li>
-      <details class="nav-dropdown" {% if page.section == 'tools' %}open{% endif %}>
-        <summary>Tools</summary>
+      <details class="nav-dropdown">
+        <summary class="{% if page.section == 'tools' %}active{% endif %}">Tools</summary>
         <div class="nav-submenu">
           <a href="{{ '/weeks/week1/pulse-grouping-lab.html' | relative_url }}">Pulse Grouping Lab</a>
         </div>
       </details>
     </li>
     <li>
-      <details class="nav-dropdown" {% if page.week == 1 %}open{% endif %}>
-        <summary>Week 1</summary>
+      <details class="nav-dropdown">
+        <summary class="{% if page.week == 1 %}active{% endif %}">Week 1</summary>
         <div class="nav-submenu">
           <a href="{{ '/weeks/week1/pulse.html' | relative_url }}">Music in Time - Pulse</a>
           <a href="{{ '/weeks/week1/grouping-pulses.html' | relative_url }}">Grouping Pulses</a>
@@ -23,8 +23,8 @@
     {% assign total_weeks = (2..14) %}
     {% for w in total_weeks %}
     <li>
-      <details class="nav-dropdown" {% if page.week == w %}open{% endif %}>
-        <summary>Week {{ w }}</summary>
+      <details class="nav-dropdown">
+        <summary class="{% if page.week == w %}active{% endif %}">Week {{ w }}</summary>
         <div class="nav-submenu">
           <span class="nav-submenu-note">Locked</span>
         </div>
