@@ -25,7 +25,7 @@
     <!-- ============================ -->
     <header class="page-header">
         <h1>Pulse Grouping Lab</h1>
-        <p class="subtitle">Explore pulse, 2-pulse groupings, 3-pulse groupings, and cross-rhythmic textures.</p>
+        <p class="subtitle">Explore pulse, 2-pulse groupings, and 3-pulse groupings.</p>
     </header>
 
 
@@ -71,8 +71,7 @@
         </div>
 
         <p class="panel-hint">
-            The pattern loops for the chosen number of repeats. Pulse is always an even timeline; Tracks A and B can
-            use free clicks or groupings of 2 or 3 pulses.
+            The pattern loops for the chosen number of repeats. Pulse is always isochronous; Tracks A and B let you toggle any pulses freely to build custom groupings.
         </p>
     </section>
 
@@ -85,38 +84,23 @@
         <!-- LEFT COLUMN -->
         <div class="left-col panel">
 
-            <h2 class="section-title">Track Modes</h2>
+            <h2 class="section-title">Track Controls</h2>
 
-            <div class="track-modes-wrap">
+            <div class="track-actions">
 
                 <div class="track-control">
                     <h3>Track A</h3>
-                    <label>Mode:
-                        <select id="mode-a">
-                            <option value="free" selected>Free</option>
-                            <option value="2">Group of 2</option>
-                            <option value="3">Group of 3</option>
-                        </select>
-                    </label>
                     <button id="clear-a" class="btn small">Clear A</button>
                 </div>
 
                 <div class="track-control">
                     <h3>Track B</h3>
-                    <label>Mode:
-                        <select id="mode-b">
-                            <option value="free" selected>Free</option>
-                            <option value="2">Group of 2</option>
-                            <option value="3">Group of 3</option>
-                        </select>
-                    </label>
                     <button id="clear-b" class="btn small">Clear B</button>
                 </div>
             </div>
 
             <p class="panel-hint">
-                In grouping modes, clicking places an onset and fills a span of 2 or 3 pulses (if there is room).
-                In free mode, each click toggles a single event.
+                Click Track A or B cells to toggle any pulse freely. Use presets to jump-start ideas, then edit directly.
             </p>
 
             <hr class="divider">
@@ -145,7 +129,7 @@
             <div id="grid-container"></div>
 
             <p class="panel-hint">
-                Top row = pulse timeline (not clickable). Tracks A and B rows are clickable.
+                Top row = pulse (not clickable). Tracks A and B rows are clickable.
                 Hover to see column guides; the blue highlight shows the current pulse during playback.
             </p>
 

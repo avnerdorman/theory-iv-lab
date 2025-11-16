@@ -12,9 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let trackA = [];
   let trackB = [];
 
-  let modeA = "free";
-  let modeB = "free";
-
   let isPlaying = false;
   let currentStep = 0;
   let maxSteps = patternLength * repeats;
@@ -29,8 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const lengthSelect = document.getElementById("length-select");
   const repeatsInput = document.getElementById("repeats-input");
   const pulseToggle = document.getElementById("pulse-toggle");
-  const modeASelect = document.getElementById("mode-a");
-  const modeBSelect = document.getElementById("mode-b");
   const clearABtn = document.getElementById("clear-a");
   const clearBBtn = document.getElementById("clear-b");
   const exportBtn = document.getElementById("export-btn");
@@ -264,29 +259,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isNaN(index)) return;
 
     if (track === "A") {
-      applyClickToTrack(trackA, index, modeA);
+      applyClickToTrack(trackA, index);
     } else if (track === "B") {
-      applyClickToTrack(trackB, index, modeB);
+      applyClickToTrack(trackB, index);
     }
     buildGrid();
   }
 
-function applyClickToTrack(trackArr, index, mode) {
-  if (mode === "free") {
-    trackArr[index] = !trackArr[index];
-    return;
-  }
-
-  const span = parseInt(mode, 10); // 2 or 3
-  if (index + span <= patternLength) {
-    // First pulse = onset
-    trackArr[index] = true;
-
-    // Remainder = silence
-    for (let i = 1; i < span; i++) {
-      trackArr[index + i] = false;
-    }
-  }
+function applyClickToTrack(trackArr, index) {
+  trackArr[index] = !trackArr[index];
 }
 
   // --- Hover guides ---
@@ -294,35 +275,18 @@ function applyClickToTrack(trackArr, index, mode) {
   function onCellHoverEnter(e) {
     const cell = e.currentTarget;
     const index = parseInt(cell.dataset.index, 10);
-    const track = cell.dataset.track;
-
     if (isNaN(index)) return;
 
     // Highlight column across pulse & both tracks
     highlightColumn(index, true);
-
-    // Preview grouping span for that track if mode is 2 or 3
-    let mode = track === "A" ? modeA : modeB;
-    if (mode === "2" || mode === "3") {
-      const span = parseInt(mode, 10);
-      previewGroupingSpan(track, index, span, true);
-    }
   }
 
   function onCellHoverLeave(e) {
     const cell = e.currentTarget;
     const index = parseInt(cell.dataset.index, 10);
-    const track = cell.dataset.track;
-
     if (isNaN(index)) return;
 
     highlightColumn(index, false);
-
-    let mode = track === "A" ? modeA : modeB;
-    if (mode === "2" || mode === "3") {
-      const span = parseInt(mode, 10);
-      previewGroupingSpan(track, index, span, false);
-    }
   }
 
   function highlightColumn(index, on) {
@@ -337,19 +301,6 @@ function applyClickToTrack(trackArr, index, mode) {
       if (on) c.classList.add("col-highlight");
       else c.classList.remove("col-highlight");
     });
-  }
-
-  function previewGroupingSpan(track, startIndex, span, on) {
-    const end = Math.min(startIndex + span, patternLength);
-    for (let i = startIndex; i < end; i++) {
-      const cells = gridContainer.querySelectorAll(
-        `.cell[data-index="${i}"][data-track="${track}"]`
-      );
-      cells.forEach(c => {
-        if (on) c.classList.add("group-preview");
-        else c.classList.remove("group-preview");
-      });
-    }
   }
 
   // --- Playback ---
@@ -607,14 +558,6 @@ function applyClickToTrack(trackArr, index, mode) {
 
   pulseToggle.addEventListener("change", e => {
     pulseOn = e.target.checked;
-  });
-
-  modeASelect.addEventListener("change", e => {
-    modeA = e.target.value;
-  });
-
-  modeBSelect.addEventListener("change", e => {
-    modeB = e.target.value;
   });
 
   clearABtn.addEventListener("click", () => {

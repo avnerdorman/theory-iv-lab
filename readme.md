@@ -21,7 +21,7 @@ https://avnerdorman.github.io/theory-iv-lab/
 `pulse-grouping-lab.html`  
 Interactive sequencer for exploring:
 
-- a steady pulse timeline  
+- a steady pulse   
 - grouping pulses into 2s and 3s  
 - layered grouping lines (two independent tracks)  
 - hemiola-like textures without needing notation  

@@ -131,7 +131,7 @@ h1, h2, h3 {
 /* TRACK CONTROLS                */
 /* ============================= */
 
-.track-modes-wrap {
+.track-actions {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -206,10 +206,6 @@ h1, h2, h3 {
 
 .col-highlight {
     box-shadow: 0 0 0 2px #88bbff inset;
-}
-
-.group-preview {
-    background: #99ddee !important;
 }
 
 .pulse-dot.current {
