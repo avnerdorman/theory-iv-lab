@@ -1,158 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Pulse & Groupings Lab</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Grouping Lab</title>
 
-  <!-- Shared styles -->
-  <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/main.css">
 
-  <!-- Tone.js from CDN (fine to keep external; can be mirrored locally later if you prefer) -->
-  <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+    <!-- Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
 
-  <!-- Shared utilities -->
-  <script src="assets/js/shared.js" defer></script>
+    <!-- Shared helpers -->
+    <script src="assets/js/shared.js" defer></script>
 
-  <!-- This lab's logic -->
-  <script src="assets/js/pulse-grouping.js" defer></script>
+    <!-- Main JS -->
+    <script src="assets/js/pulse-grouping.js" defer></script>
 </head>
-<body class="lab-body">
-  <header class="lab-header">
-    <h1>Pulse &amp; Groupings Lab</h1>
-    <p class="subtitle">
-      Explore a steady pulse with two independent rhythm layers (A &amp; B).  
-      Build patterns using groupings of 2 and 3, loop them, and export or share your work.
-    </p>
-    <a class="back-link" href="index.html">&larr; Back to Lab Menu</a>
-  </header>
 
-  <!-- Presets -->
-  <section class="panel">
-    <h2>Presets &amp; Patterns</h2>
-    <div class="controls-row">
-      <label>
-        Load preset:
-        <select id="preset-select">
-          <option value="empty">Empty pattern</option>
-          <option value="two-three-alt">Track A: 2–3–2–3</option>
-          <option value="cross-23">Cross-grouping: A in 2s, B in 3s</option>
-          <option value="offset-23">Offset A/B 2–3 pattern</option>
-          <option value="random-23">Random 2/3 grouping pattern</option>
-        </select>
-      </label>
-      <button id="load-preset-btn" class="secondary">Load Preset</button>
-      <span class="small-note">
-        Presets are just starting points—you can edit freely after loading.
-      </span>
-    </div>
-  </section>
+<body>
 
-  <!-- Transport & global controls -->
-  <section class="panel">
-    <h2>Playback &amp; Global Settings</h2>
-    <div class="controls-row">
-      <button id="play-btn">Play</button>
-      <button id="stop-btn" class="secondary">Stop</button>
+    <!-- ============================ -->
+    <!-- HEADER / TITLE               -->
+    <!-- ============================ -->
+    <header class="page-header">
+        <h1>Pulse Grouping Lab</h1>
+        <p class="subtitle">Explore pulse, 2-pulse groupings, 3-pulse groupings, and cross-rhythmic textures.</p>
+    </header>
 
-      <label>
-        Tempo:
-        <input id="tempo-slider" type="range" min="40" max="160" value="90" />
-        <span id="tempo-label">90 BPM</span>
-      </label>
 
-      <label>
-        Pattern length:
-        <select id="length-select">
-          <option value="8">8 pulses</option>
-          <option value="12">12 pulses</option>
-          <option value="16" selected>16 pulses</option>
-          <option value="24">24 pulses</option>
-          <option value="32">32 pulses</option>
-        </select>
-      </label>
+    <!-- ============================ -->
+    <!-- PLAYBACK CONTROLS (FULL WIDTH)
+    <!-- ============================ -->
+    <section class="section panel">
+        <h2 class="section-title">Playback & Global Settings</h2>
 
-      <label>
-        Repeats:
-        <input id="repeats-input" type="number" min="1" max="32" value="8" />
-      </label>
+        <div class="settings-row">
 
-      <label class="checkbox-inline">
-        <input id="pulse-toggle" type="checkbox" checked />
-        Pulse sound on
-      </label>
-    </div>
-    <p class="small-note">
-      The pattern loops for the chosen number of repeats. Pulse is always an even timeline; Tracks A and B can use
-      free clicks or groupings of 2 or 3 pulses.
-    </p>
-  </section>
+            <button id="play-btn" class="btn">Play</button>
+            <button id="stop-btn" class="btn">Stop</button>
 
-  <!-- Track controls -->
-  <section class="panel">
-    <h2>Track Modes</h2>
-    <div class="controls-row">
-      <div class="track-control-block">
-        <div class="track-title track-a-title">Track A</div>
-        <label>
-          Mode:
-          <select id="mode-a">
-            <option value="free">Free</option>
-            <option value="2">Group 2</option>
-            <option value="3">Group 3</option>
-          </select>
-        </label>
-        <button id="clear-a" class="secondary small-btn">Clear A</button>
-      </div>
+            <div class="field-block">
+                <label for="tempo-slider">Tempo:</label>
+                <input id="tempo-slider" type="range" min="40" max="200" value="90">
+                <span id="tempo-label">90 BPM</span>
+            </div>
 
-      <div class="track-control-block">
-        <div class="track-title track-b-title">Track B</div>
-        <label>
-          Mode:
-          <select id="mode-b">
-            <option value="free">Free</option>
-            <option value="2">Group 2</option>
-            <option value="3">Group 3</option>
-          </select>
-        </label>
-        <button id="clear-b" class="secondary small-btn">Clear B</button>
-      </div>
-    </div>
+            <div class="field-block">
+                <label for="length-select">Pattern length:</label>
+                <select id="length-select">
+                    <option value="8">8 pulses</option>
+                    <option value="12">12 pulses</option>
+                    <option value="16" selected>16 pulses</option>
+                    <option value="24">24 pulses</option>
+                    <option value="32">32 pulses</option>
+                </select>
+            </div>
 
-    <p class="small-note">
-      In grouping modes, clicking on a pulse fills a span of 2 or 3 pulses on that track (if there is room).
-      In free mode, each click toggles a single event.
-    </p>
-  </section>
+            <div class="field-block">
+                <label for="repeats-input">Repeats:</label>
+                <input id="repeats-input" type="number" min="1" max="32" value="8">
+            </div>
 
-  <!-- Grid -->
-  <section class="panel">
-    <h2>Pulse Grid</h2>
-    <div id="grid-container"></div>
-    <p class="small-note">
-      Each block shows up to 16 pulses. Top row = pulse timeline (not clickable). Track A and Track B rows are clickable.
-      Hover to see column guides; the blue highlight shows the current pulse during playback.
-    </p>
-  </section>
+            <div class="field-block checkbox-block">
+                <label>
+                    <input type="checkbox" id="pulse-toggle" checked>
+                    Pulse sound on
+                </label>
+            </div>
+        </div>
 
-  <!-- Export / Save / Share -->
-  <section class="panel">
-    <h2>Export, Save, &amp; Share</h2>
-    <div class="controls-row">
-      <button id="export-btn" class="secondary">Generate Text Representation</button>
-      <button id="download-txt-btn" class="secondary">Download as .txt</button>
-      <button id="download-json-btn" class="secondary">Download as .json</button>
-      <button id="share-link-btn" class="secondary">Copy Shareable Link</button>
-    </div>
-    <textarea id="export-area" readonly></textarea>
-    <p class="small-note">
-      Text export uses dots and X (● = pulse, X = event, . = silence). JSON export preserves all pattern details.
-      The shareable link encodes your pattern in the URL parameters so you (or students) can reload it instantly.
-    </p>
-  </section>
+        <p class="panel-hint">
+            The pattern loops for the chosen number of repeats. Pulse is always an even timeline; Tracks A and B can
+            use free clicks or groupings of 2 or 3 pulses.
+        </p>
+    </section>
 
-  <footer class="lab-footer">
-    Theory IV Interactive Lab &middot; Pulse &amp; Groupings · &copy; Avner Dorman
-  </footer>
+
+    <!-- ============================ -->
+    <!-- TWO COLUMN LAYOUT            -->
+    <!-- ============================ -->
+    <section class="layout-two-col">
+
+        <!-- LEFT COLUMN -->
+        <div class="left-col panel">
+
+            <h2 class="section-title">Track Modes</h2>
+
+            <div class="track-modes-wrap">
+
+                <div class="track-control">
+                    <h3>Track A</h3>
+                    <label>Mode:
+                        <select id="mode-a">
+                            <option value="free" selected>Free</option>
+                            <option value="2">Group of 2</option>
+                            <option value="3">Group of 3</option>
+                        </select>
+                    </label>
+                    <button id="clear-a" class="btn small">Clear A</button>
+                </div>
+
+                <div class="track-control">
+                    <h3>Track B</h3>
+                    <label>Mode:
+                        <select id="mode-b">
+                            <option value="free" selected>Free</option>
+                            <option value="2">Group of 2</option>
+                            <option value="3">Group of 3</option>
+                        </select>
+                    </label>
+                    <button id="clear-b" class="btn small">Clear B</button>
+                </div>
+            </div>
+
+            <p class="panel-hint">
+                In grouping modes, clicking places an onset and fills a span of 2 or 3 pulses (if there is room).
+                In free mode, each click toggles a single event.
+            </p>
+
+            <hr class="divider">
+
+            <h3 class="section-subtitle">Presets</h3>
+
+            <div class="preset-row">
+                <select id="preset-select">
+                    <option value="empty">Empty</option>
+                    <option value="two-three-alt">2–3 Alternation</option>
+                    <option value="cross-23">Cross 2-vs-3</option>
+                    <option value="offset-23">Offset 2-vs-3</option>
+                    <option value="random-23">Random 2/3</option>
+                </select>
+                <button id="load-preset-btn" class="btn small">Load</button>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col panel">
+
+            <h2 class="section-title">Pulse Grid</h2>
+
+            <div id="grid-container"></div>
+
+            <p class="panel-hint">
+                Top row = pulse timeline (not clickable). Tracks A and B rows are clickable.
+                Hover to see column guides; the blue highlight shows the current pulse during playback.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================ -->
+    <!-- EXPORT (FULL WIDTH)          -->
+    <!-- ============================ -->
+    <section class="section panel">
+
+        <h2 class="section-title">Export / Save / Share</h2>
+
+        <div class="export-controls">
+
+            <button id="export-btn" class="btn small">Generate text</button>
+            <button id="download-txt-btn" class="btn small">Download TXT</button>
+            <button id="download-json-btn" class="btn small">Download JSON</button>
+            <button id="share-link-btn" class="btn small">Copy Share Link</button>
+
+        </div>
+
+        <textarea id="export-area" placeholder="Exported pattern text will appear here..."></textarea>
+
+    </section>
+
+
 </body>
 </html>
