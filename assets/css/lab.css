@@ -1,0 +1,260 @@
+/* ============================= */
+/* RESET / BASICS (LAB)          */
+/* ============================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #222;
+    background: #fafafa;
+}
+
+body.embedded {
+    background: transparent;
+}
+
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.page-header {
+    padding: 20px 24px 10px 24px;
+}
+
+.subtitle {
+    margin-top: 4px;
+    color: #555;
+}
+
+
+/* ============================= */
+/* PANELS & SECTIONS             */
+/* ============================= */
+
+.section.panel,
+.panel {
+    background: #fff;
+    padding: 14px 20px;
+    margin: 12px auto;
+    max-width: 1200px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+body.embedded .panel {
+    margin: 18px 0;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body.embedded .section.panel {
+    padding-top: 4px;
+}
+
+body.embedded .page-header {
+    display: none;
+}
+
+.section-title {
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+.section-subtitle {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.panel-hint {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.divider {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+
+/* ============================= */
+/* SETTINGS ROW (PLAYBACK)       */
+/* ============================= */
+
+.settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 20px;
+    align-items: center;
+}
+
+.field-block label {
+    margin-right: 4px;
+}
+
+.hidden {
+    display: none;
+}
+
+.inline-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+    font-size: 0.9rem;
+}
+
+.infinite-indicator {
+    text-align: center;
+    font-weight: 600;
+}
+
+.checkbox-block label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* ============================= */
+/* BUTTONS                       */
+/* ============================= */
+
+.btn {
+    padding: 6px 14px;
+    background: #e7e7e7;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #ddd;
+}
+
+.btn.small {
+    padding: 4px 10px;
+}
+
+.btn.tiny {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+}
+
+
+/* ============================= */
+/* PRESETS                       */
+/* ============================= */
+
+.preset-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.top-preset-row {
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.top-preset-row label {
+    font-weight: 600;
+}
+
+
+/* ============================= */
+/* GRID (PULSES AND TRACKS)      */
+/* ============================= */
+
+#grid-container {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.row-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pulse-row,
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pulse-label,
+.track-label,
+.row-label {
+    width: 110px;
+    text-align: right;
+    padding-right: 6px;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.track-label {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+.pulse-dot,
+.cell {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    margin: 1px;
+}
+
+.cell {
+    border-radius: 4px;
+}
+
+.cell.track-a-on {
+    background: #0077ff;
+}
+
+.cell.track-b-on {
+    background: #ff6600;
+}
+
+.col-highlight {
+    box-shadow: 0 0 0 2px #88bbff inset;
+}
+
+.pulse-dot.current {
+    background: #444;
+}
+
+
+/* ============================= */
+/* EXPORT BOX                    */
+/* ============================= */
+
+.export-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#export-area {
+    width: 100%;
+    height: 180px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    font-family: monospace;
+    background: #fafafa;
+}
