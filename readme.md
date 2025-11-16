@@ -49,6 +49,13 @@ theory-iv-lab/
 
 ---
 
+## Audio & Credits
+
+- Playback is powered by [Tone.js](https://tonejs.github.io/) (loaded via CDN for GitHub Pages compatibility).
+- Percussion samples are sourced from the open Drumhaus project by Max Fung (CC BY-NC 4.0) and live in `assets/drumhaus-main/public/samples/`. Please keep that attribution if you reuse the kit.
+
+---
+
 ## 🛠 Local Use
 
 Clone the repo:

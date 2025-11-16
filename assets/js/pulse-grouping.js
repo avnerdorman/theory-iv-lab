@@ -7,9 +7,33 @@ import {
   downloadTextFile
 } from "./shared.js";
 
-let audioContext = null;
-let masterGain = null;
 let schedulerId = null;
+let toneStarted = false;
+const tonePlayers = {};
+
+// Sample sources pulled from Drumhaus (CC BY-NC 4.0 by Max Fung).
+const SOUND_LIBRARY = {
+  pulse: {
+    url: "assets/drumhaus-main/public/samples/3/dk_stick_click.wav",
+    volume: -10
+  },
+  "hat-bright": {
+    url: "assets/drumhaus-main/public/samples/9/hat_crisp.wav",
+    volume: -4
+  },
+  clave: {
+    url: "assets/drumhaus-main/public/samples/3/dk_sidestick.wav",
+    volume: -6
+  },
+  shaker: {
+    url: "assets/drumhaus-main/public/samples/3/dk_shaker.wav",
+    volume: -8
+  },
+  wood: {
+    url: "assets/drumhaus-main/public/samples/0/tom2.wav",
+    volume: -6
+  }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
@@ -372,7 +396,10 @@ function applyClickToTrack(trackArr, index) {
 
   async function startPlayback() {
     if (isPlaying) return;
-    await ensureAudioContext();
+    const toneReady = await ensureToneReady();
+    if (!toneReady) {
+      console.warn("Tone.js not available; playback will be silent.");
+    }
     currentStep = 0;
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
     isPlaying = true;
@@ -653,105 +680,67 @@ function applyClickToTrack(trackArr, index) {
   buildGrid();
 });
 
-async function ensureAudioContext() {
-  if (typeof window === "undefined") return;
-  if (!audioContext) {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-    audioContext = new AudioCtx();
-    masterGain = audioContext.createGain();
-    masterGain.gain.value = 0.8;
-    masterGain.connect(audioContext.destination);
-  }
-  if (audioContext.state === "suspended") {
+function getTone() {
+  if (typeof window === "undefined") return null;
+  return window.Tone || null;
+}
+
+async function ensureToneReady() {
+  const ToneLib = getTone();
+  if (!ToneLib) return false;
+  if (!toneStarted) {
     try {
-      await audioContext.resume();
+      await ToneLib.start();
+      toneStarted = true;
     } catch (err) {
-      console.error("Unable to resume AudioContext", err);
+      console.error("Unable to start Tone.js", err);
+      return false;
     }
   }
+  const ctx = ToneLib.getContext();
+  if (ctx && ctx.state === "suspended") {
+    try {
+      await ctx.resume();
+    } catch (err) {
+      console.error("Unable to resume Tone.js audio context", err);
+      return false;
+    }
+  }
+  return true;
+}
+
+function getPlayer(soundId) {
+  const ToneLib = getTone();
+  if (!ToneLib) return null;
+  const sound = SOUND_LIBRARY[soundId];
+  if (!sound) return null;
+  if (!tonePlayers[soundId]) {
+    const player = new ToneLib.Player({
+      url: sound.url,
+      fadeIn: sound.fadeIn ?? 0.001,
+      fadeOut: sound.fadeOut ?? 0.08,
+      autostart: false
+    }).toDestination();
+    if (typeof sound.volume === "number") {
+      player.volume.value = sound.volume;
+    }
+    tonePlayers[soundId] = player;
+  }
+  return tonePlayers[soundId];
 }
 
 function triggerPulseSound() {
-  if (!audioContext || !masterGain) return;
-  playNoiseBurst({ centerFreq: 3200, q: 3, duration: 0.05, gain: 0.25 });
+  triggerSample("pulse");
 }
 
 function triggerTrackSound(soundId = "clave") {
-  if (!audioContext || !masterGain) return;
-  switch (soundId) {
-    case "hat-bright":
-      playNoiseBurst({ centerFreq: 9000, q: 6, duration: 0.07, gain: 0.45 });
-      break;
-    case "shaker":
-      playNoiseBurst({ centerFreq: 5000, q: 1.2, duration: 0.12, gain: 0.3 });
-      break;
-    case "wood":
-      playToneClick({
-        type: "triangle",
-        startFreq: 700,
-        endFreq: 400,
-        duration: 0.14,
-        gain: 0.4
-      });
-      break;
-    case "clave":
-    default:
-      playToneClick({
-        type: "square",
-        startFreq: 1500,
-        endFreq: 1100,
-        duration: 0.08,
-        gain: 0.45
-      });
-      break;
-  }
+  triggerSample(soundId);
 }
 
-function playNoiseBurst({ centerFreq, q = 1.5, duration = 0.08, gain = 0.3 }) {
-  const now = audioContext.currentTime;
-  const bufferSize = Math.max(1, Math.floor(audioContext.sampleRate * duration));
-  const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-
-  const noise = audioContext.createBufferSource();
-  noise.buffer = noiseBuffer;
-
-  const filter = audioContext.createBiquadFilter();
-  filter.type = "bandpass";
-  filter.frequency.value = centerFreq;
-  filter.Q.value = q;
-
-  const gainNode = audioContext.createGain();
-  gainNode.gain.setValueAtTime(gain, now);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-  noise.connect(filter);
-  filter.connect(gainNode);
-  gainNode.connect(masterGain);
-
-  noise.start(now);
-  noise.stop(now + duration);
-}
-
-function playToneClick({ type, startFreq, endFreq, duration, gain }) {
-  const now = audioContext.currentTime;
-  const osc = audioContext.createOscillator();
-  osc.type = type;
-  osc.frequency.setValueAtTime(startFreq, now);
-  if (endFreq && endFreq > 0) {
-    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
-  }
-
-  const gainNode = audioContext.createGain();
-  gainNode.gain.setValueAtTime(gain, now);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-  osc.connect(gainNode);
-  gainNode.connect(masterGain);
-  osc.start(now);
-  osc.stop(now + duration);
+function triggerSample(soundId) {
+  const ToneLib = getTone();
+  if (!ToneLib) return;
+  const player = getPlayer(soundId);
+  if (!player) return;
+  player.start(ToneLib.now());
 }
