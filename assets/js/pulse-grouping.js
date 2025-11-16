@@ -298,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gridContainer.appendChild(rowBlock);
 
   updateCurrentPulseHighlight(-1);
+  requestEmbedResize();
 }
 
 function createTrackLabel(labelText, clearHandler) {
@@ -682,6 +683,10 @@ function applyClickToTrack(trackArr, index) {
   updateLengthControls(patternLength);
   updateRepeatControls();
   buildGrid();
+
+  if (embedMode) {
+    window.addEventListener("resize", requestEmbedResize);
+  }
 });
 
 function getTone() {
@@ -747,4 +752,34 @@ function triggerSample(soundId) {
   const player = getPlayer(soundId);
   if (!player) return;
   player.start(ToneLib.now());
+}
+
+let embedResizeScheduled = false;
+function requestEmbedResize() {
+  if (!document.body || !document.body.classList.contains("embedded")) return;
+  if (embedResizeScheduled) return;
+  embedResizeScheduled = true;
+  window.setTimeout(() => {
+    embedResizeScheduled = false;
+    sendEmbedResize();
+  }, 100);
+}
+
+function sendEmbedResize() {
+  if (!document.body || !document.body.classList.contains("embedded")) return;
+  if (!window.parent || window.parent === window) return;
+  const height =
+    document.documentElement?.scrollHeight ||
+    document.body?.scrollHeight ||
+    document.body?.offsetHeight ||
+    0;
+  if (!height) return;
+  window.parent.postMessage(
+    {
+      source: "pulse-grouping-lab",
+      type: "resize",
+      height
+    },
+    "*"
+  );
 }
