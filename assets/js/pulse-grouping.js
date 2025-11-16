@@ -255,10 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
 
-  // Initially clear any highlight
-    updateCurrentPulseHighlight(-1);
-  }
-
   // --- Cell interaction ---
 
   function onCellClick(e) {
