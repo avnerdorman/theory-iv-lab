@@ -377,8 +377,13 @@ function applyClickToTrack(trackArr, index) {
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
     isPlaying = true;
     updatePlayButtonState();
-    stepCallback();
-    schedulerId = window.setInterval(stepCallback, getStepDurationMs());
+    const delay = 120;
+    const interval = getStepDurationMs();
+    setTimeout(() => {
+      if (!isPlaying) return;
+      stepCallback();
+      schedulerId = window.setInterval(stepCallback, interval);
+    }, delay);
   }
 
   function stopPlayback() {
