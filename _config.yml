@@ -1,0 +1,9 @@
+name: theory-iv-lab
+markdown: kramdown
+theme: null
+exclude:
+  - node_modules
+  - README.md
+  - readme.md
+  - package-lock.json
+  - package.json

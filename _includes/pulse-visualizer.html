@@ -1,0 +1,131 @@
+<style>
+  #pulseCanvas {
+    border: 1px solid #ccc;
+    max-width: 100%;
+    display: block;
+  }
+  #controls {
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  #controls label {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+  #controls input[type="range"] {
+    width: 200px;
+  }
+</style>
+
+<div id="controls">
+  <button id="toggleBtn" class="btn">Start Pulse</button>
+  <label>
+    Tempo:
+    <input type="range" id="tempoSlider" min="40" max="160" value="100">
+    <span id="tempoLabel">100 BPM</span>
+  </label>
+</div>
+
+<canvas id="pulseCanvas" width="800" height="120"></canvas>
+
+<script>
+let audioContext = null;
+let pulseIntervalId = null;
+let isRunning = false;
+
+function initAudio() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function playClick() {
+  if (!audioContext) return;
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  osc.frequency.value = 1000;
+  gain.gain.value = 0.3;
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+  const now = audioContext.currentTime;
+  osc.start(now);
+  osc.stop(now + 0.03);
+}
+
+const canvas = document.getElementById('pulseCanvas');
+const ctx = canvas.getContext('2d');
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const pixelsPerPulse = 60;
+
+let tempoBPM = 100;
+let startTime = performance.now();
+
+function drawFrame() {
+  const now = performance.now();
+  const intervalMs = 60000 / tempoBPM;
+  const phase = ((now - startTime) % intervalMs) / intervalMs;
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.beginPath();
+  ctx.moveTo(0, centerY);
+  ctx.lineTo(canvas.width, centerY);
+  ctx.strokeStyle = '#444';
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX, 0);
+  ctx.lineTo(centerX, canvas.height);
+  ctx.strokeStyle = '#888';
+  ctx.stroke();
+
+  const maxTicks = Math.ceil(canvas.width / pixelsPerPulse) + 2;
+  for (let n = -maxTicks; n <= maxTicks; n++) {
+    const x = centerX + n * pixelsPerPulse - phase * pixelsPerPulse;
+    if (x < 0 || x > canvas.width) continue;
+    ctx.beginPath();
+    ctx.moveTo(x, centerY-10);
+    ctx.lineTo(x, centerY+10);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(drawFrame);
+}
+
+document.getElementById('tempoSlider').addEventListener('input', e => {
+  tempoBPM = Number(e.target.value);
+  document.getElementById('tempoLabel').textContent = tempoBPM + ' BPM';
+  startTime = performance.now();
+  if (isRunning) restartPulseInterval();
+});
+
+function restartPulseInterval() {
+  if (pulseIntervalId) clearInterval(pulseIntervalId);
+  const intervalMs = 60000 / tempoBPM;
+  pulseIntervalId = setInterval(playClick, intervalMs);
+}
+
+document.getElementById('toggleBtn').addEventListener('click', () => {
+  if (!isRunning) {
+    initAudio();
+    startTime = performance.now();
+    restartPulseInterval();
+    isRunning = true;
+    document.getElementById('toggleBtn').textContent = 'Stop Pulse';
+  } else {
+    clearInterval(pulseIntervalId);
+    pulseIntervalId = null;
+    isRunning = false;
+    document.getElementById('toggleBtn').textContent = 'Start Pulse';
+  }
+});
+
+requestAnimationFrame(drawFrame);
+</script>

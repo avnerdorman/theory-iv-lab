@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<article class="course-panel lesson-panel">
+  {% if page.title %}
+  <h1>{{ page.title }}</h1>
+  {% endif %}
+  {% if page.locked %}
+  <p class="badge badge-locked">Locked</p>
+  {% endif %}
+  {{ content }}
+</article>

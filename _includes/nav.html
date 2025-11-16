@@ -1,0 +1,35 @@
+<nav class="site-nav">
+  <div class="nav-title">Music Theory IV — MUS_CLAS 242</div>
+  <ul class="nav-links">
+    <li><a href="{{ '/' | relative_url }}">Home</a></li>
+    <li>
+      <details class="nav-dropdown" {% if page.section == 'tools' %}open{% endif %}>
+        <summary>Tools</summary>
+        <div class="nav-submenu">
+          <a href="{{ '/weeks/week1/pulse-grouping-lab.html' | relative_url }}">Pulse Grouping Lab</a>
+        </div>
+      </details>
+    </li>
+    <li>
+      <details class="nav-dropdown" {% if page.week == 1 %}open{% endif %}>
+        <summary>Week 1</summary>
+        <div class="nav-submenu">
+          <a href="{{ '/weeks/week1/pulse.html' | relative_url }}">Music in Time - Pulse</a>
+          <a href="{{ '/weeks/week1/grouping-pulses.html' | relative_url }}">Grouping Pulses</a>
+          <a href="{{ '/weeks/week1/pulse-grouping-lab.html' | relative_url }}">Pulse Grouping Lab (interactive)</a>
+        </div>
+      </details>
+    </li>
+    {% assign total_weeks = (2..14) %}
+    {% for w in total_weeks %}
+    <li>
+      <details class="nav-dropdown" {% if page.week == w %}open{% endif %}>
+        <summary>Week {{ w }}</summary>
+        <div class="nav-submenu">
+          <span class="nav-submenu-note">Locked</span>
+        </div>
+      </details>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
