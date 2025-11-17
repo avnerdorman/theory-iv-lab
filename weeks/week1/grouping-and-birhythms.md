@@ -1,137 +1,127 @@
 ---
-layout: default
-title: "Practicing Bi-Rhythms (2-and-3 Coordination)"
-nav_week: 1
-nav_order: 3
+layout: lesson
+title: Bi-Rhythms and Vertical Hemiola
+week: 1
 ---
 
-# Practicing Bi-Rhythms (2-and-3 Coordination)
+# Bi-Rhythms and Vertical Hemiola
+These exercises follow directly from **Grouping Pulses** and introduce the idea of **two simultaneous grouping cycles** occurring over the same steady pulse.
 
-This page follows directly from our work with **pulse** and **pulse groupings**.  
-Here we begin training the coordination needed for **2-and-3 bi-rhythms**, using only:
+There is:
 
-- counting evenly from **1 to 6**
-- tapping with the **primary-use hand** (your dominant hand)
-- tapping with the **secondary-use hand**
-- **no beats**, no meter, no hierarchy, and no notation
+- no meter  
+- no beat  
+- no hierarchy  
+- no notation
 
-Everything is still grounded in **pulse** and **groupings**.
+Everything is built from one shared **isochronous pulse**, grouped in different ways.
 
----
+The terms used here:
 
-## 1. Count 1–6 and Tap 3-Groupings (Primary Hand)
+- **Primary Hand** = your dominant or naturally coordinated hand  
+- **Non-Primary Hand** = the other hand  
 
-Count evenly:
+The primary hand taps **1–3–5** (3-grouping),  
+The non-primary hand taps **1** (2-grouping across the same six pulses).
 
-**1 2 3 4 5 6**
-
-Tap your **primary-use hand** (right for most students) on:
-
-- 1  
-- 3  
-- 5  
-
-This produces a **3-grouping over 6 pulses**.
-
-| Left Hand | Count | Right Hand |
-|-----------|--------|------------|
-| 1         | 1      | 1          |
-|           | 2      |            |
-|           | 3      | 3          |
-|           | 4      |            |
-|           | 5      | 5          |
-|           | 6      |            |
+This produces what we call the **vertical hemiola**.
 
 ---
 
-## 2. Count 1–6 and Tap 2-Groupings (Secondary Hand)
+# 1. Foundation: Saying 1–6 and Tapping 3-Group / 2-Group
+This is the core skill:
 
-Using the **same counting**, now tap your **secondary-use hand** on:
+1. Say **1 2 3 4 5 6** evenly with a pulse.
+2. Tap the **primary hand** on **1, 3, 5**.
+3. Tap the **non-primary hand** on **1**.
 
-- 1  
-- 4  
+This creates:
 
-This produces a **2-grouping over 6 pulses**.
-
-| Left Hand | Count | Right Hand |
-|-----------|--------|------------|
-| 1         | 1      | 1          |
-|           | 2      |            |
-|           | 3      |            |
-| 4         | 4      |            |
-|           | 5      |            |
-|           | 6      |            |
+- **3 taps** in the primary hand  
+- **2 taps** in the non-primary hand  
+- **over the same 6 pulses**
 
 ---
 
-## 3. Combine Both — 3-Over-2 Bi-Rhythm
-
-Now perform both patterns **at the same time**, using:
-
-- primary hand: taps on **1, 3, 5**
-- secondary hand: taps on **1, 4**
-- same verbal counting **1–6**
-
-This is now a **bi-rhythm** built entirely from *groupings of pulse*.
-
-| Left Hand | Count | Right Hand |
-|-----------|--------|------------|
-| 1         | 1      | 1          |
-|           | 2      |            |
-|           | 3      |            |
-| 4         | 4      | 4          |
-|           | 5      |            |
-|           | 6      |            |
+# 2. Vertical Hemiola Exercises  
+These match your original Google Sites/docx tables.
 
 ---
 
-## 4. Extended Bi-Rhythm Practice (Optional)
+## **Vertical Hemiola Exercise I**
+Count steadily.  
+Tap the **primary hand** on **1, 3, 5**, and the **non-primary hand** on **1**.
 
-These longer cycles come directly from the same principle:  
-**count evenly, place groupings at fixed positions, then combine.**
-
-### Example: 3 over a 12-pulse cycle
-
-| Left Hand | Count | Right Hand |
-|-----------|--------|------------|
-| 1         | 1      | 1          |
-|           | 2      |            |
-|           | 3      | 3          |
-| 4         | 4      |            |
-|           | 5      |            |
-|           | 6      | 6          |
-| 7         | 7      |            |
-|           | 8      |            |
-|           | 9      | 9          |
-| 10        | 10     |            |
-|           | 11     |            |
-|           | 12     | 12         |
+| Non-Primary Hand | Count | Primary Hand |
+|------------------|--------|--------------|
+| 1 | 1 | 1 |
+|   | 2 |   |
+|   | 3 | 3 |
+|   | 4 |   |
+|   | 5 | 5 |
+|   | 6 |   |
 
 ---
 
-### Example: Larger 20-pulse pattern
+## **Vertical Hemiola Exercise II**
 
-This is simply another extension of the same tap-on-fixed-positions idea:
+| Non-Primary Hand | Count | Primary Hand |
+|------------------|--------|--------------|
+| 1 | 1 | 1 |
+|   | 2 |   |
+|   | 3 | 3 |
+|   | 4 |   |
+|   | 5 | 5 |
+|   | 6 |   |
 
-| Left Hand | Count | Right Hand |
-|-----------|--------|------------|
-| 1         | 1      | 1          |
-|           | 2      |            |
-|           | 3      |            |
-| 4         | 4      |            |
-|           | 5      | 5          |
-| 6         | 6      |            |
-|           | 7      |            |
-|           | 8      |            |
-| 9         | 9      | 9          |
-|           | 10     |            |
-| 11        | 11     |            |
-|           | 12     |            |
-|           | 13     | 13         |
-| 14        | 14     |            |
-|           | 15     |            |
-| 16        | 16     |            |
-|           | 17     | 17         |
-| 18        | 18     |            |
-|           | 19     |            |
-|           | 20     |            |
+---
+
+## **Vertical Hemiola Exercise III**
+
+| Non-Primary Hand | Count | Primary Hand |
+|------------------|--------|--------------|
+| 1 | 1 | 1 |
+|   | 2 | 2 |
+|   | 3 | 3 |
+| 4 | 4 | 4 |
+|   | 5 | 5 |
+|   | 6 | 6 |
+
+---
+
+## **Vertical Hemiola Exercise V**
+Shift your awareness to the **non-primary hand** and count with it.
+
+| Non-Primary Hand | Count | Primary Hand |
+|------------------|--------|--------------|
+| 1 | 1 | 1 |
+| . | . | . |
+| . | . | . |
+| 2 | 2 | 2 |
+| . | . | . |
+| . | . | . |
+|   | 3 | 3 |
+
+Dots = silent motions or unaccented taps, matching your original tables.
+
+---
+
+# 3. Moving from Hemiola to Bi-Rhythms  
+Once the 2-vs-3 vertical hemiola is comfortable, we extend the same logic:
+
+- One shared pulse
+- Two different grouping cycles
+- No meter or beat
+- No notation
+
+Just **patterns** unfolding across time.
+
+---
+
+# 4. Bi-Rhythm Extension: 4 Against 3 (No Meter)
+
+We avoid time signatures entirely.
+
+Use a **12-pulse cycle**.
+
+### Step 1 — Count the 12 pulses
