@@ -1,0 +1,136 @@
+<!-- Tone.js (global) + main module -->
+<script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.min.js"></script>
+<script type="module" src="{{ '/assets/js/pulse-grouping.js' | relative_url }}"></script>
+<style>
+    body {
+        background: transparent !important;
+    }
+</style>
+    <!-- ============================ -->
+    <!-- HEADER / TITLE               -->
+    <!-- ============================ -->
+    <header class="page-header">
+        <h1>Pulse Grouping Lab</h1>
+        <p class="subtitle">Explore pulse groupings.</p>
+    </header>
+
+
+    <!-- ============================ -->
+    <!-- PLAYBACK CONTROLS (FULL WIDTH)
+    <!-- ============================ -->
+    <section class="section panel">
+        <h2 class="section-title">Playback & Global Settings</h2>
+
+        <div class="settings-row">
+
+            <button id="play-btn" class="btn">Play</button>
+            <button id="stop-btn" class="btn">Stop</button>
+
+            <div class="field-block">
+                <label for="tempo-slider">Tempo:</label>
+                <input id="tempo-slider" type="range" min="40" max="200" value="90">
+                <span id="tempo-label">90 BPM</span>
+            </div>
+
+            <div class="field-block">
+                <label for="length-select">Pattern length:</label>
+                <select id="length-select">
+                    <option value="8">8 pulses</option>
+                    <option value="12">12 pulses</option>
+                    <option value="16" selected>16 pulses</option>
+                    <option value="24">24 pulses</option>
+                    <option value="32">32 pulses</option>
+                    <option value="custom">Custom…</option>
+                </select>
+                <input id="length-custom" type="number" min="1" max="36" value="16" class="hidden" aria-label="Custom pattern length">
+            </div>
+
+            <div class="field-block">
+                <label for="repeats-input">Repeats:</label>
+                <input id="repeats-input" type="number" min="1" max="32" value="8">
+                <label class="inline-checkbox">
+                    <input type="checkbox" id="repeat-infinite">
+                    Infinite
+                </label>
+            </div>
+
+            <div class="field-block">
+                <label for="sound-a-select">Track A sound:</label>
+                <select id="sound-a-select">
+                    <option value="hat-bright" selected>Bright hat</option>
+                    <option value="clave">Clave click</option>
+                    <option value="shaker">Soft shaker</option>
+                    <option value="wood">Wood block</option>
+                </select>
+            </div>
+
+            <div class="field-block">
+                <label for="sound-b-select">Track B sound:</label>
+                <select id="sound-b-select">
+                    <option value="clave" selected>Clave click</option>
+                    <option value="hat-bright">Bright hat</option>
+                    <option value="shaker">Soft shaker</option>
+                    <option value="wood">Wood block</option>
+                </select>
+            </div>
+
+            <div class="field-block checkbox-block">
+                <label>
+                    <input type="checkbox" id="pulse-toggle" checked>
+                    Pulse sound on
+                </label>
+            </div>
+        </div>
+
+        <div class="preset-row top-preset-row">
+            <label for="preset-select">Presets:</label>
+            <select id="preset-select">
+                <option value="empty">Empty</option>
+                <option value="two-three-alt">2–3 Alternation</option>
+                <option value="cross-23">Cross 2-vs-3</option>
+                <option value="offset-23">Offset 2-vs-3</option>
+                <option value="random-23">Random 2/3</option>
+            </select>
+            <button id="load-preset-btn" class="btn small">Load</button>
+        </div>
+
+        <p class="panel-hint">
+            The pattern loops for the chosen number of repeats. Pulse is always isochronous; Tracks A and B let you toggle any pulses freely to build custom groupings.
+        </p>
+    </section>
+
+
+    <!-- ============================ -->
+    <!-- PULSE GRID                   -->
+    <!-- ============================ -->
+    <section class="panel">
+        <h2 class="section-title">Pulse Grid</h2>
+
+        <div id="grid-container"></div>
+
+        <p class="panel-hint">
+            Top row = pulse (not clickable). Tracks A and B rows are clickable.
+            Hover to see column guides; the blue highlight shows the current pulse during playback.
+        </p>
+    </section>
+
+
+    <!-- ============================ -->
+    <!-- EXPORT (FULL WIDTH)          -->
+    <!-- ============================ -->
+    <section class="section panel">
+
+        <h2 class="section-title">Export / Save / Share</h2>
+
+        <div class="export-controls">
+
+            <button id="export-btn" class="btn small">Generate text</button>
+            <button id="download-txt-btn" class="btn small">Download TXT</button>
+            <button id="download-json-btn" class="btn small">Download JSON</button>
+            <button id="share-link-btn" class="btn small">Copy Share Link</button>
+
+        </div>
+
+        <textarea id="export-area" placeholder="Exported pattern text will appear here..."></textarea>
+
+    </section>
