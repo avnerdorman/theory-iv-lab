@@ -1,10 +1,22 @@
 <!-- Tone.js (global) + main module -->
 <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.min.js"></script>
+{% assign rel_assets = '/assets' | relative_url %}
+{% if site.url %}
+  {% assign pulse_asset_base = site.url | append: rel_assets %}
+{% else %}
+  {% assign pulse_asset_base = rel_assets %}
+{% endif %}
 <script
     id="pulse-lab-config"
-    data-asset-base="{{ '/assets' | relative_url }}"
+    data-asset-base="{{ pulse_asset_base }}"
     data-embed="{{ page.layout == 'embed' }}"></script>
-<script type="module" src="{{ '/assets/js/pulse-grouping.js' | relative_url }}"></script>
+{% assign rel_script = '/assets/js/pulse-grouping.js' | relative_url %}
+{% if site.url %}
+  {% assign pulse_script = site.url | append: rel_script %}
+{% else %}
+  {% assign pulse_script = rel_script %}
+{% endif %}
+<script type="module" src="{{ pulse_script }}"></script>
 <style>
     body {
         background: transparent !important;

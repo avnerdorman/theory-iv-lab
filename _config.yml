@@ -1,6 +1,8 @@
 name: theory-iv-lab
 markdown: kramdown
 theme: null
+url: https://avnerdorman.github.io
+baseurl: /theory-iv-lab
 exclude:
   - node_modules
   - README.md

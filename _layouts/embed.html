@@ -4,8 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title | default: site.name }}</title>
-  {% assign stylesheet = page.stylesheet | default: '/assets/css/main.css' %}
-  <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
+  {% assign stylesheet_path = page.stylesheet | default: '/assets/css/main.css' %}
+  {% if stylesheet_path contains '://' %}
+    {% assign stylesheet_url = stylesheet_path %}
+  {% else %}
+    {% assign rel_stylesheet = stylesheet_path | relative_url %}
+    {% if site.url %}
+      {% assign stylesheet_url = site.url | append: rel_stylesheet %}
+    {% else %}
+      {% assign stylesheet_url = rel_stylesheet %}
+    {% endif %}
+  {% endif %}
+  <link rel="stylesheet" href="{{ stylesheet_url }}">
 </head>
 <body class="embed-layout embedded">
   {{ content }}
