@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+  <!-- Q1: Purpose of the 6-count cycle -->
+  <question type="multichoice">
+    <name>
+      <text>2 vs 3 – Purpose of the 6-count cycle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      In the 2-vs-3 tapping exercise, we speak a steady cycle of<br>
+      <strong>1–2–3–4–5–6</strong>.<br><br>
+      What is the main reason for using this 6-count cycle?
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      The 6-count provides a neutral scaffold that is long enough to express both 3-group (1–3–5) and 2-group (1–4) patterns over the same even pulse, without introducing meter or accents.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+
+    <answer fraction="100">
+      <text>It provides a neutral counting scaffold long enough to show both 3-group and 2-group patterns over the same even pulse.</text>
+      <feedback format="html">
+        <text>Correct.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>It defines a fixed meter of 6/4 that we use for the whole course.</text>
+      <feedback format="html">
+        <text>We are not defining a meter here.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>It marks strong and weak beats in a hierarchy.</text>
+      <feedback format="html">
+        <text>We are not assigning strong/weak or hierarchy yet.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>It is just a random choice of numbers with no particular purpose.</text>
+      <feedback format="html">
+        <text>The 6-count is chosen specifically because it accommodates both 2- and 3-groupings.</text>
+      </feedback>
+    </answer>
+  </question>
+
+  <!-- Q2: Identifying the 3-group pattern -->
+  <question type="multichoice">
+    <name>
+      <text>2 vs 3 – Identifying the 3-group pattern</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      While counting <strong>1–2–3–4–5–6</strong> evenly, you tap one hand on<br>
+      <strong>1, 3, and 5</strong>.<br><br>
+      What type of grouping are you experiencing?
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      Tapping 1–3–5 over an even 6-count creates a 3-group pattern: three equally spaced taps across six pulses.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+
+    <answer fraction="100">
+      <text>A grouping of 3 pulses repeated over the 6-count.</text>
+      <feedback format="html">
+        <text>Correct.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A grouping of 2 pulses repeated over the 6-count.</text>
+      <feedback format="html">
+        <text>Grouping in 2 uses taps on 1 and 4.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A random tapping pattern with no structure.</text>
+      <feedback format="html">
+        <text>There is a clear structure here: equal spacing every two pulses.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A pattern that defines a fixed meter with accents on 1, 3, and 5.</text>
+      <feedback format="html">
+        <text>We are not defining meter or accent patterns at this stage.</text>
+      </feedback>
+    </answer>
+  </question>
+
+  <!-- Q3: Identifying the 2-group pattern -->
+  <question type="multichoice">
+    <name>
+      <text>2 vs 3 – Identifying the 2-group pattern</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      While counting <strong>1–2–3–4–5–6</strong> evenly, you tap one hand on<br>
+      <strong>1 and 4</strong>.<br><br>
+      What type of grouping are you experiencing?
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      Tapping 1 and 4 over six pulses creates a 2-group pattern: two equally spaced taps separated by three pulses each.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+
+    <answer fraction="100">
+      <text>A grouping of 2 pulses repeated over the 6-count.</text>
+      <feedback format="html">
+        <text>Correct.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A grouping of 3 pulses repeated over the 6-count.</text>
+      <feedback format="html">
+        <text>Grouping in 3 would use 1, 3, and 5.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A purely random tapping pattern.</text>
+      <feedback format="html">
+        <text>There is clear regular spacing between taps.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>A pattern that necessarily implies a compound meter.</text>
+      <feedback format="html">
+        <text>We are not assigning meter labels here, only grouping.</text>
+      </feedback>
+    </answer>
+  </question>
+
+  <!-- Q4: Combining 2 and 3 – what are we learning? -->
+  <question type="multichoice">
+    <name>
+      <text>2 vs 3 – What is the main goal?</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      When you count <strong>1–2–3–4–5–6</strong> evenly, tap one hand on <strong>1–3–5</strong>, and the other on <strong>1–4</strong>, what is the main goal of this exercise in this course?
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      The goal is to experience how two different groupings (2 and 3) can coexist over the same even pulse before introducing notation, meter, or accent hierarchy.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <single>true</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>
+
+    <answer fraction="100">
+      <text>To experience how 2-group and 3-group patterns interact over the same even pulse.</text>
+      <feedback format="html">
+        <text>Exactly.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>To memorize all possible polyrhythms used in world music.</text>
+      <feedback format="html">
+        <text>This exercise is much more focused than that.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>To practice reading complex meter signatures in notation.</text>
+      <feedback format="html">
+        <text>We are staying away from notation and meter here.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="0">
+      <text>To prepare directly for twelve-tone pitch rows.</text>
+      <feedback format="html">
+        <text>This work will support later concepts, but that is not the immediate goal.</text>
+      </feedback>
+    </answer>
+  </question>
+
+  <!-- Q5: Matching patterns to descriptions -->
+  <question type="matching">
+    <name>
+      <text>2 vs 3 – Matching patterns and descriptions</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      Match each pattern description with the correct grouping idea.<br><br>
+      All examples assume an even pulse and a 1–2–3–4–5–6 counting cycle.
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      These descriptions all refer to groupings over the same pulse, without introducing meter labels or strong/weak beats.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>3.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+    <shuffleanswers>true</shuffleanswers>
+
+    <subquestion format="html">
+      <text><![CDATA[
+      Tapping on counts 1, 3, and 5
+      ]]></text>
+      <answer>
+        <text>Grouping pulses in 3.</text>
+      </answer>
+    </subquestion>
+
+    <subquestion format="html">
+      <text><![CDATA[
+      Tapping on counts 1 and 4
+      ]]></text>
+      <answer>
+        <text>Grouping pulses in 2.</text>
+      </answer>
+    </subquestion>
+
+    <subquestion format="html">
+      <text><![CDATA[
+      Counting 1–2–3–4–5–6 with no taps at all
+      ]]></text>
+      <answer>
+        <text>Pulse without imposed grouping.</text>
+      </answer>
+    </subquestion>
+  </question>
+
+  <!-- Q6: True/false about meter and hierarchy -->
+  <question type="truefalse">
+    <name>
+      <text>2 vs 3 – Meter and hierarchy?</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[
+      In this course, the 2-vs-3 tapping exercise (1–3–5 in one hand, 1–4 in the other, over 1–2–3–4–5–6) is intended to <strong>define a specific meter with strong and weak beats</strong>.
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[
+      At this stage, the exercise is about grouping pulses and experiencing the interaction of 2- and 3-groups over an even pulse. We are not defining meter or accent hierarchy yet.
+      ]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.3333333</penalty>
+
+    <answer fraction="0">
+      <text>true</text>
+      <feedback format="html">
+        <text>In this context, we are not defining meter or strong/weak beats.</text>
+      </feedback>
+    </answer>
+
+    <answer fraction="100">
+      <text>false</text>
+      <feedback format="html">
+        <text>Correct. The goal is grouping experience, not meter labeling.</text>
+      </feedback>
+    </answer>
+  </question>
+
+</quiz>
