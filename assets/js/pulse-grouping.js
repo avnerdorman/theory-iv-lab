@@ -18,6 +18,8 @@ const EMBED_FROM_CONFIG = configEl?.dataset?.embed === "true";
 let schedulerId = null;
 let toneStarted = false;
 const tonePlayers = {};
+let toneUnlocking = false;
+let toneUnlocked = false;
 
 // Sample sources pulled from Drumhaus (CC BY-NC 4.0 by Max Fung).
 const SOUND_LIBRARY = {
@@ -42,6 +44,8 @@ const SOUND_LIBRARY = {
     volume: -6
   }
 };
+
+setupToneUnlock();
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
@@ -763,6 +767,34 @@ function triggerSample(soundId) {
   const player = getPlayer(soundId);
   if (!player) return;
   player.start(ToneLib.now());
+}
+
+function setupToneUnlock() {
+  if (!docRef) return;
+  const unlockEvents = ["pointerdown", "touchstart", "keydown"];
+  const handler = () => {
+    if (toneUnlocked || toneUnlocking) return;
+    toneUnlocking = true;
+    ensureToneReady()
+      .then(success => {
+        toneUnlocking = false;
+        if (success) {
+          toneUnlocked = true;
+          unlockEvents.forEach(evt => docRef.removeEventListener(evt, handler));
+        }
+      })
+      .catch(() => {
+        toneUnlocking = false;
+      });
+  };
+
+  unlockEvents.forEach(evt => {
+    if (evt === "keydown") {
+      docRef.addEventListener(evt, handler);
+    } else {
+      docRef.addEventListener(evt, handler, { passive: true });
+    }
+  });
 }
 
 let embedResizeScheduled = false;
