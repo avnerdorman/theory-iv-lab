@@ -16,10 +16,8 @@ const ASSET_BASE = assetBaseRaw.endsWith("/")
 const EMBED_FROM_CONFIG = configEl?.dataset?.embed === "true";
 
 let schedulerId = null;
-let toneStarted = false;
+let audioUnlocked = false;
 const tonePlayers = {};
-let toneUnlocking = false;
-let toneUnlocked = false;
 
 // Sample sources pulled from Drumhaus (CC BY-NC 4.0 by Max Fung).
 const SOUND_LIBRARY = {
@@ -44,8 +42,6 @@ const SOUND_LIBRARY = {
     volume: -6
   }
 };
-
-setupToneUnlock();
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
@@ -417,9 +413,28 @@ function applyClickToTrack(trackArr, index) {
 
   async function startPlayback() {
     if (isPlaying) return;
-    const toneReady = await ensureToneReady();
-    if (!toneReady) {
+    const ToneLib = getTone();
+    if (!ToneLib) {
       console.warn("Tone.js not available; playback will be silent.");
+      return;
+    }
+    if (!audioUnlocked) {
+      try {
+        await ToneLib.start();
+        audioUnlocked = true;
+      } catch (err) {
+        console.error("Unable to start Tone.js", err);
+        return;
+      }
+    }
+    const ctx = ToneLib.getContext();
+    if (ctx && ctx.state === "suspended") {
+      try {
+        await ctx.resume();
+      } catch (err) {
+        console.error("Unable to resume Tone.js audio context", err);
+        return;
+      }
     }
     currentStep = 0;
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
@@ -709,30 +724,6 @@ function getTone() {
   return window.Tone || null;
 }
 
-async function ensureToneReady() {
-  const ToneLib = getTone();
-  if (!ToneLib) return false;
-  if (!toneStarted) {
-    try {
-      await ToneLib.start();
-      toneStarted = true;
-    } catch (err) {
-      console.error("Unable to start Tone.js", err);
-      return false;
-    }
-  }
-  const ctx = ToneLib.getContext();
-  if (ctx && ctx.state === "suspended") {
-    try {
-      await ctx.resume();
-    } catch (err) {
-      console.error("Unable to resume Tone.js audio context", err);
-      return false;
-    }
-  }
-  return true;
-}
-
 function getPlayer(soundId) {
   const ToneLib = getTone();
   if (!ToneLib) return null;
@@ -767,34 +758,6 @@ function triggerSample(soundId) {
   const player = getPlayer(soundId);
   if (!player) return;
   player.start(ToneLib.now());
-}
-
-function setupToneUnlock() {
-  if (!docRef) return;
-  const unlockEvents = ["pointerdown", "touchstart", "keydown"];
-  const handler = () => {
-    if (toneUnlocked || toneUnlocking) return;
-    toneUnlocking = true;
-    ensureToneReady()
-      .then(success => {
-        toneUnlocking = false;
-        if (success) {
-          toneUnlocked = true;
-          unlockEvents.forEach(evt => docRef.removeEventListener(evt, handler));
-        }
-      })
-      .catch(() => {
-        toneUnlocking = false;
-      });
-  };
-
-  unlockEvents.forEach(evt => {
-    if (evt === "keydown") {
-      docRef.addEventListener(evt, handler);
-    } else {
-      docRef.addEventListener(evt, handler, { passive: true });
-    }
-  });
 }
 
 let embedResizeScheduled = false;
