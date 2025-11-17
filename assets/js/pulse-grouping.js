@@ -7,6 +7,14 @@ import {
   downloadTextFile
 } from "./shared.js";
 
+const docRef = typeof document !== "undefined" ? document : null;
+const configEl = docRef ? docRef.getElementById("pulse-lab-config") : null;
+const assetBaseRaw = configEl?.dataset?.assetBase || "/assets";
+const ASSET_BASE = assetBaseRaw.endsWith("/")
+  ? assetBaseRaw.slice(0, -1)
+  : assetBaseRaw;
+const EMBED_FROM_CONFIG = configEl?.dataset?.embed === "true";
+
 let schedulerId = null;
 let toneStarted = false;
 const tonePlayers = {};
@@ -14,23 +22,23 @@ const tonePlayers = {};
 // Sample sources pulled from Drumhaus (CC BY-NC 4.0 by Max Fung).
 const SOUND_LIBRARY = {
   pulse: {
-    url: "assets/drumhaus-main/public/samples/3/dk_stick_click.wav",
+    url: `${ASSET_BASE}/drumhaus-main/public/samples/3/dk_stick_click.wav`,
     volume: -10
   },
   "hat-bright": {
-    url: "assets/drumhaus-main/public/samples/9/hat_crisp.wav",
+    url: `${ASSET_BASE}/drumhaus-main/public/samples/9/hat_crisp.wav`,
     volume: -4
   },
   clave: {
-    url: "assets/drumhaus-main/public/samples/3/dk_sidestick.wav",
+    url: `${ASSET_BASE}/drumhaus-main/public/samples/3/dk_sidestick.wav`,
     volume: -6
   },
   shaker: {
-    url: "assets/drumhaus-main/public/samples/3/dk_shaker.wav",
+    url: `${ASSET_BASE}/drumhaus-main/public/samples/3/dk_shaker.wav`,
     volume: -8
   },
   wood: {
-    url: "assets/drumhaus-main/public/samples/0/tom2.wav",
+    url: `${ASSET_BASE}/drumhaus-main/public/samples/0/tom2.wav`,
     volume: -6
   }
 };
@@ -39,7 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
   const pulsesPerRow = 16;
   const initialParams = getQueryParams();
-  const embedMode = initialParams.embed === "1";
+  const embedMode =
+    initialParams.embed === "1" ||
+    EMBED_FROM_CONFIG ||
+    (document.body?.classList?.contains("embedded") ?? false);
   if (embedMode && document.body) {
     document.body.classList.add("embedded");
   }
