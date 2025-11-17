@@ -18,6 +18,7 @@ const EMBED_FROM_CONFIG = configEl?.dataset?.embed === "true";
 let schedulerId = null;
 let audioUnlocked = false;
 const tonePlayers = {};
+const playerReady = {};
 
 // Sample sources pulled from Drumhaus (CC BY-NC 4.0 by Max Fung).
 const SOUND_LIBRARY = {
@@ -42,6 +43,8 @@ const SOUND_LIBRARY = {
     volume: -6
   }
 };
+
+setupToneUnlock();
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Constants & state ---
@@ -69,6 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentStep = 0;
   let maxSteps = patternLength * repeats;
   let infiniteRepeats = false;
+
+  function preloadSelectedPlayers() {
+    getPlayer("pulse");
+    getPlayer(trackASound);
+    getPlayer(trackBSound);
+  }
 
   function getStepDurationMs() {
     return (60 / tempo / 4) * 1000;
@@ -436,6 +445,7 @@ function applyClickToTrack(trackArr, index) {
         return;
       }
     }
+    preloadSelectedPlayers();
     currentStep = 0;
     maxSteps = infiniteRepeats ? Infinity : patternLength * repeats;
     isPlaying = true;
@@ -685,10 +695,12 @@ function applyClickToTrack(trackArr, index) {
 
   soundASelect.addEventListener("change", e => {
     trackASound = e.target.value;
+    getPlayer(trackASound);
   });
 
   soundBSelect.addEventListener("change", e => {
     trackBSound = e.target.value;
+    getPlayer(trackBSound);
   });
 
   pulseToggle.addEventListener("change", e => {
@@ -740,6 +752,13 @@ function getPlayer(soundId) {
       player.volume.value = sound.volume;
     }
     tonePlayers[soundId] = player;
+    player.loaded
+      .then(() => {
+        playerReady[soundId] = true;
+      })
+      .catch(err => {
+        console.error(`Failed to load sample ${soundId}`, err);
+      });
   }
   return tonePlayers[soundId];
 }
@@ -757,7 +776,43 @@ function triggerSample(soundId) {
   if (!ToneLib) return;
   const player = getPlayer(soundId);
   if (!player) return;
-  player.start(ToneLib.now());
+  if (!playerReady[soundId]) {
+    return;
+  }
+  try {
+    player.start(ToneLib.now());
+  } catch (err) {
+    console.error("Unable to trigger sample", err);
+  }
+}
+
+function setupToneUnlock() {
+  if (!docRef) return;
+  const unlockEvents = ["pointerdown", "touchstart", "keydown"];
+  const onUnlockEvent = () => {
+    const ToneLib = getTone();
+    if (!ToneLib || audioUnlocked) {
+      unlockEvents.forEach(evt =>
+        docRef.removeEventListener(evt, onUnlockEvent)
+      );
+      return;
+    }
+    ToneLib.start()
+      .then(() => {
+        audioUnlocked = true;
+        unlockEvents.forEach(evt =>
+          docRef.removeEventListener(evt, onUnlockEvent)
+        );
+      })
+      .catch(err => {
+        console.warn("Tone.js could not start on first gesture", err);
+      });
+  };
+
+  unlockEvents.forEach(evt => {
+    const opts = evt === "keydown" ? { once: false } : { once: false, passive: true };
+    docRef.addEventListener(evt, onUnlockEvent, opts);
+  });
 }
 
 let embedResizeScheduled = false;
